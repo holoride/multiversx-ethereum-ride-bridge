@@ -1,0 +1,11 @@
+[workspace]
+members = [
+  "esdt-safe",
+  "esdt-safe/meta",
+  "multi-transfer-esdt",
+  "multi-transfer-esdt/meta",
+  "multisig",
+  "multisig/meta",
+  "bridged-tokens-wrapper",
+  "bridged-tokens-wrapper/meta"
+]
