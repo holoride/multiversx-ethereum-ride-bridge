@@ -99,21 +99,28 @@ function getBSCConfig(network: string): NetworkUserConfig {
   return config;
 }
 
-const config: HardhatUserConfig = {
+const config = {
   defaultNetwork: "hardhat",
-  gasReporter: {
-    currency: "USD",
-    enabled: process.env.REPORT_GAS ? true : false,
-    coinmarketcap: process.env.CMC_TOKEN || "26043cba-19e3-4a70-8575-916adb54fa12",
-    excludeContracts: [],
-    src: "./contracts",
-  },
   networks: {
     hardhat: {
       accounts: {
         mnemonic,
       },
       chainId: chainIds.hardhat,
+    },
+    garbitrum: {
+      accounts: {
+        count: 20,
+        mnemonic: mnemonic,
+        path: "m/44'/60'/0'/0",
+        initialIndex: 0,
+      },
+      url: 'https://arb-goerli.g.alchemy.com/v2/' + infuraApiKey,
+      network_id: 421613,
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 2000,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true,     // Skip dry run before migrations? (default: false for public nets )
+      gas: 6000000
     },
     goerli: getChainConfig("goerli"),
     kovan: getChainConfig("kovan"),
