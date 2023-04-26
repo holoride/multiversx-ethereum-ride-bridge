@@ -25,6 +25,10 @@ case "$1" in
   confirmation relayer-stake
   ;;
 
+'burn-tokens')
+  confirmation burn-tokens
+  ;;
+
 'deploy-bridge-contracts')
   echo -e 
   echo "PREREQUIREMENTS: AGGREGATOR & BRIDGED_TOKENS_WRAPPER deployed"

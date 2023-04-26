@@ -58,3 +58,21 @@ mint() {
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${VALUE_TO_MINT} \
     --send --proxy=${PROXY} --chain=${CHAIN_ID}
 }
+
+setBurnRole() {
+    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
+    --gas-limit=60000000 --function="setSpecialRole" \
+    --arguments str:${CHAIN_SPECIFIC_TOKEN} ${ALICE_ADDRESS} str:ESDTRoleLocalBurn \
+    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+burn() {
+    CHECK_VARIABLES NR_DECIMALS_CHAIN_SPECIFIC ALICE_ADDRESS CHAIN_SPECIFIC_TOKEN
+    read -p "Amount to burn(without decimals): " AMOUNT_TO_MINT
+    VALUE_TO_MINT=$(echo "$AMOUNT_TO_MINT*10^$NR_DECIMALS_CHAIN_SPECIFIC" | bc)
+
+    mxpy --verbose contract call ${ALICE_ADDRESS} --recall-nonce --pem=${ALICE} \
+        --gas-limit=300000 --function="ESDTLocalBurn" \
+        --arguments str:${UNIVERSAL_TOKEN} ${VALUE_TO_MINT} \
+        --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
