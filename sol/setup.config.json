@@ -1,0 +1,11 @@
+{
+    "erc20Safe": "0x7E90DbE83BCcbA5A571884CA4120088F69cd4ff3",
+    "bridge": "0x9b456c406aa628B2d8F483cE54479c06ee18B47b",
+    "relayers": ["0xed82c7a9d20128a80e17abc1f88505c0f01aa060"],
+    "tokens": [{
+        "0xc92a4b122e806267A4A440595f1b908A6fed79c3": {
+            "min": "0x00",
+            "max": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+    }]
+}

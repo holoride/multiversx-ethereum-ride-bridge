@@ -1,0 +1,106 @@
+(all commands from root of project)
+prerequisites (from root):
+    - cp .mnemonic.sample .mnemonic
+    - put mnemonic in file .mnemonic
+    - install mxpy
+    - nvm use 11 && npm install bip39-cli
+    - source .env
+    - MNEMONIC is now equal to your mnemonic
+
+to get first erc20 account from mnemonic into keyfile "wallets/ethereum.sk":
+line=$(bip39-cli accounts --count 1 $MNEMONIC) && arr=(`echo ${line}`) && echo ${arr[2]} >> ethereum.sk && mv ethereum.sk wallets/
+
+to get mx account into keyfile "wallets/multiversx.pem":
+mxpy wallet convert --infile .mnemonic --outfile multiversx.pem --in-format raw-mnemonic --out-format pem --address-index 0 && mv multiversx.pem wallets/
+
+eth
+    - cd sol
+    - yarn set version latest
+    - yarn install
+    - yarn compile
+    - mv .env.example .env
+    - add INFURA_API_KEY, MNEMONIC, RELAYER_ADDR_0-N to .env file
+    - source .env
+
+    - deploy safe
+        task: deploy/safe.ts
+            will:
+                - deploy safe
+                - set data on config file
+        command: npx hardhat --network sepolia deploy-safe
+
+    - deploy bridge, whitelist relayers
+        task: deploy/bridge.ts
+            takes:
+                - relayer addresses
+                - quorum (default 3)
+            will:
+                - deploy bridge with params
+                - set data on config file
+        command: yarn hardhat --network sepolia deploy-bridge --relayer-addresses '['\"$RELAYER_ADDR_0\"']' --quorum 1
+    
+    
+    - whitelist bridge on safe
+        task: deploy/set-bridge-on-safe.ts
+            will:
+                - do dat
+        command: npx hardhat --network sepolia set-bridge-on-safe
+
+    - create and whitelist token on safe
+        task: deploy/deploy-whitelist-token.ts
+            will:
+                - do dat
+        command: npx hardhat --network sepolia deploy-whitelist-token 
+
+    - open setup.config.json
+    - copy tokens[0] for multiversx
+
+multiversx
+docs info:
+    rs/docs/setup.md
+    - cd rs
+    - copy tokens[0] from previous step into multisig/interaction/config/configs.cfg:ERC20_TOKEN
+    - install
+       - rustup install nightly
+       - cargo +nightly build
+       - ./build-wasm.sh
+    - deploy contracts
+        - after each deploy, configs.cfg will be updated automatically.
+        - cd multisig/interaction
+        - mkdir walletsRelay
+        - move deployer key in walletsRelay as alice.pem
+        - ensure deployer key has EGLD
+        - deploy aggregator contract
+            - command: ./script.sh deploy-aggregator
+            - what:
+                deploys aggregator contract (used to get eth fees)
+        - deploy bridge tokens wrapper
+            - ./script.sh deploy-wrapper
+        - deploy bridge contracts
+            - ./script.sh deploy-bridge-contracts
+            - what:
+                deploys the safe (where users deposit to),
+                deploys the MultiTransfer contract
+                deploys the multisig (controller contract, multisig for the relayers)
+        - whitelist token
+            - command: ./script.sh whitelist-token
+              what:  
+                - issues universal and chain-specific token
+        - add-relayer
+            - command ./script.sh add-relayer
+            - paste in relayer address
+
+
+relayer
+    - cd bridge
+    - get key for relayer
+        - cp ../wallets/multiversx.pem cmd/bridge/keys
+        - cp ../wallets/ethereum.sk cmd/bridge/keys
+    - config 
+        - update config/config.toml with addresses created
+    - build
+        - install go >= 1.17.6
+        - make build
+    - run
+        - cd cmd/bridge && ./bridge
+
