@@ -8,7 +8,8 @@ task("mint-test-tokens", "Mints tests tokens and sends them to the recipientAddr
     let config = JSON.parse(fs.readFileSync(filename, "utf8"));
     const address = taskArgs.address;
 
-    for (let token of config["tokens"]) {
+    for (let tokenObject of config["tokens"]) {
+      let token = Object.keys(tokenObject)[0];
       console.log("minting tokens for contract: ", token);
       const tokenContract = (await hre.ethers.getContractFactory("GenericERC20")).attach(token);
       await tokenContract.mint(address, 100000000000000);

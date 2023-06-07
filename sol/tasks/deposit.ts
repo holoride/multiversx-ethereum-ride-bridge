@@ -1,10 +1,10 @@
 import { task } from "hardhat/config";
 import { getDeployOptions } from "./args/deployOptions";
+import { bech32 } from "bech32";
 
 task("deposit", "Deposits token and sends to safe")
-  .addParam("address", "Address of the token to be sent")
   .addParam("amount", "Amount we want to deposit (full value, with decimals)")
-  .addParam("receiver", "Elrond address hex encoded of the receiver")
+  .addParam("receiver", "Multiversx address hex encoded of the receiver")
   .addOptionalParam("price", "Gas price in gwei for this transaction", undefined)
   .setAction(async (taskArgs, hre) => {
     const fs = require("fs");
@@ -15,9 +15,10 @@ task("deposit", "Deposits token and sends to safe")
     const safeContractFactory = await hre.ethers.getContractFactory("ERC20Safe");
     const safe = safeContractFactory.attach(safeAddress).connect(adminWallet);
 
-    const address = taskArgs.address;
+    const address = Object.keys(config["tokens"][0])[0];
     const amount = taskArgs.amount;
     const receiver = taskArgs.receiver;
+    console.log("receiver: ", receiver);
 
     await safe.deposit(address, amount, Buffer.from(receiver, "hex"), getDeployOptions(taskArgs));
   });

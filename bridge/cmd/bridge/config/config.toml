@@ -1,12 +1,12 @@
 [Eth]
     Chain = "Ethereum"
-    NetworkAddress = "https://sepolia.infura.io/v3/f97f529377f6498c8293587deb03bf9c" # a network address
+    NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
     MultisigContractAddress = "0x9b456c406aa628B2d8F483cE54479c06ee18B47b" # the eth address for the bridge contract
     SafeContractAddress = "0x7E90DbE83BCcbA5A571884CA4120088F69cd4ff3"
     PrivateKeyFile = "keys/ethereum.sk" # the path to the file containing the relayer eth private key
     GasLimitBase = 350000
     GasLimitForEach = 30000
-    IntervalToWaitForTransferInSeconds = 600 #10 minutes
+    IntervalToWaitForTransferInSeconds = 30 #10 minutes
     MaxRetriesOnQuorumReached = 3
     MaxBlocksDelta = 10
     [Eth.GasStation]

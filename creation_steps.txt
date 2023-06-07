@@ -52,6 +52,12 @@ eth
                 - do dat
         command: npx hardhat --network sepolia deploy-whitelist-token 
 
+    - unpause safe
+        task: deploy/unpause-safe.ts
+
+    - unpause bridge
+        task: deploy/unpause-bridge.ts
+
     - open setup.config.json
     - copy tokens[0] for multiversx
 
@@ -65,6 +71,7 @@ docs info:
        - cargo +nightly build
        - ./build-wasm.sh
     - deploy contracts
+        - NOTE: wait 10-15 secs between calls, or check on chain to see if the tx went through. some txes have dependencies on earlier executions so you must wait for each one to complete.
         - after each deploy, configs.cfg will be updated automatically.
         - cd multisig/interaction
         - mkdir walletsRelay
@@ -86,10 +93,11 @@ docs info:
             - command: ./script.sh whitelist-token
               what:  
                 - issues universal and chain-specific token
-        - add-relayer
+        - add relayer
             - command ./script.sh add-relayer
             - paste in relayer address
-
+        - unpause contracts
+            - command ./script.sh unpause-contracts
 
 relayer
     - cd bridge

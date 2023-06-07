@@ -5,7 +5,7 @@ build:
 	go build ./...
 
 build-cmd:
-	(cd cmd && go build)
+	(cd cmd/bridge && go build)
 
 clean-test:
 	go clean -testcache ./...
