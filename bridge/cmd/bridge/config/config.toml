@@ -1,6 +1,6 @@
 [Eth]
     Chain = "Ethereum"
-    NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
+    NetworkAddress = "https://sepolia.infura.io/v3/f97f529377f6498c8293587deb03bf9c" # a network address
     MultisigContractAddress = "0x9b456c406aa628B2d8F483cE54479c06ee18B47b" # the eth address for the bridge contract
     SafeContractAddress = "0x7E90DbE83BCcbA5A571884CA4120088F69cd4ff3"
     PrivateKeyFile = "keys/ethereum.sk" # the path to the file containing the relayer eth private key
@@ -23,7 +23,7 @@
 
 [MultiversX]
     NetworkAddress = "https://devnet-gateway.multiversx.com" # the network address
-    MultisigContractAddress = "erd1qqqqqqqqqqqqqpgqhnrlycudlaua4jjcqyk0mywpth0z4nn5qc2spy6yeq" # the multiversx address for the bridge contract
+    MultisigContractAddress = "erd1qqqqqqqqqqqqqpgqena5nssz42dkp66cglq0fuf4yt6amkyvg4sskuddjv" # the multiversx address for the bridge contract
     PrivateKeyFile = "keys/multiversx.pem" # the path to the pem file containing the relayer multiversx wallet
     IntervalToResendTxsInSeconds = 60 # the time in seconds between nonce reads
     MaxRetriesOnQuorumReached = 3
@@ -32,7 +32,7 @@
 
     # valid options for ProxyRestAPIEntityType are `observer` and `proxy`. Any other value will trigger an error.
     # `observer` is useful when querying an observer, directly and `proxy` is useful when querying a squad's proxy
-    ProxyRestAPIEntityType = "observer"
+    ProxyRestAPIEntityType = "proxy"
     ProxyFinalityCheck = true
     ProxyMaxNoncesDelta = 7 # the number of maximum blocks allowed to be "in front" of what the metachain has notarized
     [MultiversX.GasMap]

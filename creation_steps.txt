@@ -97,10 +97,13 @@ relayer
         - cp ../wallets/multiversx.pem cmd/bridge/keys
         - cp ../wallets/ethereum.sk cmd/bridge/keys
     - config 
-        - update config/config.toml with addresses created
+        - update cmd/bridge/config/config.toml with addresses created
     - build
         - install go >= 1.17.6
         - make build
     - run
         - cd cmd/bridge && ./bridge
+
+To test bridge:
+    
 
