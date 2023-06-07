@@ -112,6 +112,11 @@ relayer
     - run
         - cd cmd/bridge && ./bridge
 
-To test bridge:
+to execute deposit (eth side):
+    - cd sol
+    - AMOUNT={amount to deposit (w/ 6 decimals)}
+    - ADDRESS={multiversx address to send to}
+    - npx hardhat --network sepolia deposit --amount $AMOUNT --receiver $(mxpy wallet bech32 --decode $ADDRESS)
+    - wait a bit, should show in bridge and then in your wallet.
     
 
