@@ -13,6 +13,7 @@ Available commands are:
 - add-relayer
 - remove-relayer
 - whitelist-token
+- create-safe-transaction
 - set-safe-max-tx
 - set-safe-batch-block-duration
 - change-quorum

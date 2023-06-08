@@ -1,4 +1,5 @@
 import { task } from "hardhat/config";
+import { ethers } from "ethers";
 
 task("deploy-whitelist-token", "Deploys ERC20 contract to use to test the bridge, and whitelists it").setAction(async (_, hre) => {
   const [deployer] = await hre.ethers.getSigners();
@@ -15,7 +16,7 @@ task("deploy-whitelist-token", "Deploys ERC20 contract to use to test the bridge
 
   const usdcContract = await genericERC20Factory.deploy("USDC", "USDC");
   await usdcContract.deployed();
-  await usdcContract.mint(deployer.address, 100000000000000);
+  await usdcContract.mint(deployer.address, ethers.utils.formatUnits(10_000_000));
 
   const address = usdcContract.address;
 

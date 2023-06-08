@@ -28,8 +28,18 @@ setLocalRolesEsdtSafe() {
 unsetLocalRolesEsdtSafe() {
     CHECK_VARIABLES ESDT_SYSTEM_SC_ADDRESS CHAIN_SPECIFIC_TOKEN SAFE
 
-    erdpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
+    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="unSetSpecialRole" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${SAFE} str:ESDTRoleLocalBurn \
     --send --proxy=${PROXY} --chain=${CHAIN_ID}
 }
+
+createTransaction() { # Transfer chain specific token to eth
+    CHECK_VARIABLES SAFE CHAIN_SPECIFIC_TOKEN ETH_ADDRESS VALUE_TO_SEND
+
+    mxpy --verbose contract call ${SAFE} --recall-nonce --pem=${ALICE} \
+    --gas-limit=50000000 --function="ESDTTransfer" \
+    --arguments str:${CHAIN_SPECIFIC_TOKEN} ${VALUE_TO_SEND} str:createTransaction ${ETH_ADDRESS} \
+    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+

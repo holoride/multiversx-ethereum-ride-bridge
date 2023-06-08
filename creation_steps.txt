@@ -58,6 +58,10 @@ eth
     - unpause bridge
         task: deploy/unpause-bridge.ts
 
+    - init supply on safe
+        task: deploy/init-supply.ts
+        command: AMOUNT={amount of supply} && npx hardhat --network sepolia init-supply --amount $AMOUNT
+
     - open setup.config.json
     - copy tokens[0] for multiversx
 
@@ -119,4 +123,7 @@ to execute deposit (eth side):
     - npx hardhat --network sepolia deposit --amount $AMOUNT --receiver $(mxpy wallet bech32 --decode $ADDRESS)
     - wait a bit, should show in bridge and then in your wallet.
     
-
+to execute deposit (mx side):
+    - cd rs/multisig/interaction
+    - ./script.sh create-safe-transaction
+    - enter amount to transfer

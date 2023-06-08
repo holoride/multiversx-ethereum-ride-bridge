@@ -51,6 +51,19 @@ transferToSC() {
     --send --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
+unwrapToken() {
+    CHECK_VARIABLES BRIDGED_TOKENS_WRAPPER UNIVERSAL_TOKEN CHAIN_SPECIFIC_TOKEN
+
+    read -p "Amount to send(without decimals): " AMOUNT_TO_SEND
+
+    VALUE_TO_SEND=$(echo "$AMOUNT_TO_SEND*10^$NR_DECIMALS_UNIVERSAL" | bc)
+
+    mxpy --verbose contract call ${BRIDGED_TOKENS_WRAPPER} --recall-nonce --pem=${ALICE} \
+    --gas-limit=5000000 --function="ESDTTransfer" \
+    --arguments str:${UNIVERSAL_TOKEN} ${VALUE_TO_SEND} str:unwrapToken str:${CHAIN_SPECIFIC_TOKEN} \
+    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
 setMintRole() {
     mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
@@ -72,6 +85,30 @@ mint() {
     mxpy --verbose contract call ${ALICE_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=300000 --function="ESDTLocalMint" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${VALUE_TO_MINT} \
+    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+setMintRoleUniversal() {
+    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
+    --gas-limit=60000000 --function="setSpecialRole" \
+    --arguments str:${UNIVERSAL_TOKEN} ${ALICE_ADDRESS} str:ESDTRoleLocalMint \
+    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+unSetMintRoleUniversal() {
+    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
+    --gas-limit=60000000 --function="unSetSpecialRole" \
+    --arguments str:${UNIVERSAL_TOKEN} ${ALICE_ADDRESS} str:ESDTRoleLocalMint \
+    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+mintUniversal() {
+    CHECK_VARIABLES NR_DECIMALS_UNIVERSAL ALICE_ADDRESS UNIVERSAL_TOKEN
+    read -p "Amount to mint(without decimals): " AMOUNT_TO_MINT
+    VALUE_TO_MINT=$(echo "$AMOUNT_TO_MINT*10^$NR_DECIMALS_UNIVERSAL" | bc)
+    mxpy --verbose contract call ${ALICE_ADDRESS} --recall-nonce --pem=${ALICE} \
+    --gas-limit=300000 --function="ESDTLocalMint" \
+    --arguments str:${UNIVERSAL_TOKEN} ${VALUE_TO_MINT} \
     --send --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 

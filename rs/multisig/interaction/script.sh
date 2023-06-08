@@ -36,6 +36,10 @@ case "$1" in
   confirmation deploy-bridge-contracts
   ;;
 
+'create-safe-transaction')
+  confirmation create-safe-transaction
+  ;;
+
 'add-relayer')
   confirmation addBoardMember
   ;;
@@ -88,6 +92,10 @@ case "$1" in
 
 'mint-chain-specific')
   confirmation mint-chain-specific
+  ;;
+
+'mint-universal')
+  confirmation mint-universal
   ;;
 
 'upgrade-wrapper-universal-token')
