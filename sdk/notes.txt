@@ -1,0 +1,1 @@
+ok so we need to figure out what is specifically for the base token, and change to ESDT.
