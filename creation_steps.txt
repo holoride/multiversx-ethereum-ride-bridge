@@ -60,10 +60,11 @@ eth
 
     - init supply on safe
         task: deploy/init-supply.ts
-        command: AMOUNT={amount of supply} && npx hardhat --network sepolia init-supply --amount $AMOUNT
+        command: AMOUNT={amount of RIDE supply for swapping} && npx hardhat --network sepolia init-supply --amount $AMOUNT
 
     - open setup.config.json
     - copy tokens[0] for multiversx
+
 
 multiversx
 docs info:
@@ -127,3 +128,31 @@ to execute deposit (mx side):
     - cd rs/multisig/interaction
     - ./script.sh create-safe-transaction
     - enter amount to transfer
+
+
+admin:
+    add relayer:
+        eth:
+            RELAYER_ADDR={address to add} && cd sol && yarn hardhat --network sepolia add-relayer --address $RELAYER_ADDR
+        mx:
+            
+            
+    remove relayer:
+            RELAYER_ADDR={address to remove} && cd sol && yarn hardhat --network sepolia add-relayer --address $RELAYER_ADDR
+
+TODO:
+    - RIDE <-> WRIDE 1:1 swap  - asked, let's see
+    - extra quorum + relayers (2/3)
+    - staking
+    - adding new relayers (from admin)
+        - add-relayer in sol, 
+        
+    - bridge pause (from admin)
+    - multisig (for admin)
+
+    - I think we could use the bridge for swapping RIDE and WRIDE aswell, not just WRIDE and ETHRIDE
+    - but first see about the other contract
+
+
+    
+

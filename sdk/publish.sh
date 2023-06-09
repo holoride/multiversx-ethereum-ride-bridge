@@ -112,6 +112,6 @@ cd contracts/core/price-aggregator
 cargo publish || return 1
 cd ../../..
 
-cd contracts/core/wegld-swap
+cd contracts/core/wesdt-swap
 cargo publish || return 1
 cd ../../..

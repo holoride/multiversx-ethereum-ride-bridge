@@ -1,6 +1,5 @@
 import { task } from "hardhat/config";
 import { getDeployOptions } from "./args/deployOptions";
-import { bech32 } from "bech32";
 
 task("deposit", "Deposits token and sends to safe")
   .addParam("amount", "Amount we want to deposit (full value, with decimals)")

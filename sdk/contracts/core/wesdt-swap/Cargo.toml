@@ -1,5 +1,5 @@
 [package]
-name = "multiversx-wegld-swap-sc"
+name = "multiversx-wesdt-swap-sc"
 version = "0.41.2"
 
 authors = [
@@ -17,7 +17,7 @@ categories = ["no-std", "wasm", "cryptography::cryptocurrencies"]
 edition = "2021"
 
 [lib]
-path = "src/wegld.rs"
+path = "src/wesdt.rs"
 
 [dependencies.multiversx-sc]
 version = "0.41.2"

@@ -23,7 +23,7 @@ build_and_copy() {
 # if you still want to build all:
 # ./build-wasm.sh
 
-build_and_copy ./contracts/core/wegld-swap $VM_REPO_PATH/test/wegld-swap
+build_and_copy ./contracts/core/wesdt-swap $VM_REPO_PATH/test/wesdt-swap
 build_and_copy ./contracts/examples/adder $VM_REPO_PATH/test/adder
 build_and_copy ./contracts/examples/crowdfunding-esdt $VM_REPO_PATH/test/crowdfunding-esdt
 build_and_copy ./contracts/examples/digital-cash $VM_REPO_PATH/test/digital-cash

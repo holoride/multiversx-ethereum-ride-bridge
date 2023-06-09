@@ -18,7 +18,7 @@ They are:
     - `multiversx-sc-wasm-adapter`
     - `multiversx-sc-modules` - *standard contract modules*
 	- `multiversx-price-aggregator-sc` - *core contract*
-	- `multiversx-wegld-swap-sc` - *core contract*
+	- `multiversx-wesdt-swap-sc` - *core contract*
 - `multiversx-sc-codec`, in short `codec`, the serializer/deserializer, 2 crates:
 	- `multiversx-sc-codec`
 	- `multiversx-sc-codec-derive`
@@ -162,7 +162,7 @@ They are:
 ## [elrond-wasm 0.34.1] - 2022-07-19
 - `#[only_admin]` annotation
 - Safer BigUint/BigInt conversions
-- Added and published `price-aggregator` and `wegld-swap` core contracts.
+- Added and published `price-aggregator` and `wesdt-swap` core contracts.
 
 ## [elrond-wasm 0.34.0, elrond-codec 0.12.0, mandos 0.16.0, elrond-interact-snippets 0.1.0] - 2022-07-08
 - Major refactor of the mandos-rs infrastructure.
