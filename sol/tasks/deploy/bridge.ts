@@ -33,4 +33,4 @@ task("deploy-bridge", "Deploys the Bridge contract")
     config.relayers = relayerAddresses;
 
     fs.writeFileSync(filename, JSON.stringify(config));
-  });
+});

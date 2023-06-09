@@ -1,5 +1,27 @@
 ESDT_ISSUE_COST=50000000000000000
 
+
+issueBaseToken() {
+    CHECK_VARIABLES ESDT_SYSTEM_SC_ADDRESS ESDT_ISSUE_COST CHAIN_SPECIFIC_TOKEN_DISPLAY_NAME \
+    BASE_TOKEN_TICKER NR_DECIMALS_BASE BASE_TOKENS_TO_MINT
+    
+    VALUE_TO_MINT=$(echo "$BASE_TOKENS_TO_MINT*10^$NR_DECIMALS_BASE" | bc)
+
+    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
+    --gas-limit=60000000 --value=${ESDT_ISSUE_COST} --function="issue" \
+    --arguments str:${BASE_TOKEN_DISPLAY_NAME} str:${BASE_TOKEN_TICKER} \
+    ${VALUE_TO_MINT} ${NR_DECIMALS_BASE} str:canAddSpecialRoles str:true \
+    --send --wait-result --outfile=issue-chain-specific-token-testnet.interaction.json --proxy=${PROXY} --chain=${CHAIN_ID}
+
+    TRANSACTION=$(mxpy data parse --file="./issue-base-token-testnet.interaction.json" --expression="data['emittedTransactionHash']")
+
+    echo $(mxpy tx get --hash ${TRANSACTION} --proxy=${PROXY}) > issue-base-token-testnet.results.json
+
+    RESULT=$(mxpy data parse --file="./issue-base-token-testnet.results.json" --expression="data['transactionOnNetwork']['smartContractResults'][0]['data']")
+
+    NAME=$(echo $RESULT | cut -d "@" -f 2 | xxd -r -p)
+}
+
 issueUniversalToken() {
     CHECK_VARIABLES ESDT_SYSTEM_SC_ADDRESS ESDT_ISSUE_COST UNIVERSAL_TOKEN_DISPLAY_NAME \
     UNIVERSAL_TOKEN_TICKER NR_DECIMALS_UNIVERSAL
@@ -51,12 +73,14 @@ transferToSC() {
     --send --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
+readValue() {
+    CHECK_VARIABLES NR_DECIMALS_UNIVERSAL
+    read -p "Amount to send (without decimals): " AMOUNT_TO_SEND
+    VALUE_TO_SEND=$(echo "$AMOUNT_TO_SEND*10^$NR_DECIMALS_UNIVERSAL" | bc)
+}
+
 unwrapToken() {
     CHECK_VARIABLES BRIDGED_TOKENS_WRAPPER UNIVERSAL_TOKEN CHAIN_SPECIFIC_TOKEN
-
-    read -p "Amount to send(without decimals): " AMOUNT_TO_SEND
-
-    VALUE_TO_SEND=$(echo "$AMOUNT_TO_SEND*10^$NR_DECIMALS_UNIVERSAL" | bc)
 
     mxpy --verbose contract call ${BRIDGED_TOKENS_WRAPPER} --recall-nonce --pem=${ALICE} \
     --gas-limit=5000000 --function="ESDTTransfer" \

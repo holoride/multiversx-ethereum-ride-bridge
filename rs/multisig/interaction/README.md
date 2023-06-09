@@ -14,10 +14,14 @@ Available commands are:
 - remove-relayer
 - whitelist-token
 - create-safe-transaction
+- create-safe-transaction-from-base
 - set-safe-max-tx
 - set-safe-batch-block-duration
 - change-quorum
 - pause-contracts
 - unpause-contracts
+- issue-base-token
+- wrap-base-token
+- unwrap-base-token
 
 All the commands that are changing any SC settings will automatically update also [configs.cfg](config/configs.cfg). However, there are some points (like token issueing) when the admin will be ask to first update the configs before proceeding with next steps.

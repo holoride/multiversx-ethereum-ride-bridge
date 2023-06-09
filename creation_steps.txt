@@ -13,8 +13,14 @@ line=$(bip39-cli accounts --count 1 $MNEMONIC) && arr=(`echo ${line}`) && echo $
 to get mx account into keyfile "wallets/multiversx.pem":
 mxpy wallet convert --infile .mnemonic --outfile multiversx.pem --in-format raw-mnemonic --out-format pem --address-index 0 && mv multiversx.pem wallets/
 
+ROOT=`pwd`
+
+sdk (to build swap contract):
+    - cd sdk/contracts/core/wesdt-swap
+    - mxpy --verbose contract build . --ignore-eei-checks
+
 eth
-    - cd sol
+    - cd $ROOT/sol
     - yarn set version latest
     - yarn install
     - yarn compile
@@ -104,6 +110,9 @@ docs info:
         - unpause contracts
             - command ./script.sh unpause-contracts
 
+        - deploy base token (to be swapped 1:1 with universal token):
+            - command ./script.sh issue-base-token
+
 relayer
     - cd bridge
     - get key for relayer
@@ -126,9 +135,11 @@ to execute deposit (eth side):
     
 to execute deposit (mx side):
     - cd rs/multisig/interaction
+    - if you have the base token:
+    - ./script.sh create-safe-transaction-from-base
+        - ./script.sh wrap-base-token
+    - if you have the universal token:
     - ./script.sh create-safe-transaction
-    - enter amount to transfer
-
 
 admin:
     add relayer:

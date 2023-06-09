@@ -21,6 +21,10 @@ case "$1" in
   confirmation upgrade-wrapper    
   ;;
 
+'deploy-wesdt-swap')
+  confirmation deploy-wesdt-swap
+  ;;
+
 'relayer-stake')
   confirmation relayer-stake
   ;;
