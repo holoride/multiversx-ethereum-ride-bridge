@@ -10,46 +10,50 @@ source $SCRIPTPATH/config/menu_functions.cfg
 
 case "$1" in
 'deploy-aggregator')
-  confirmation deploy-aggregator
+  deploy-aggregator
   ;;
 
 'deploy-wrapper')
-  confirmation deploy-wrapper    
+  deploy-wrapper    
   ;;
 
 'upgrade-wrapper')
-  confirmation upgrade-wrapper    
+  upgrade-wrapper    
   ;;
 
 'deploy-wesdt-swap')
-  confirmation deploy-wesdt-swap
+  deploy-wesdt-swap
   ;;
 
 'relayer-stake')
-  confirmation relayer-stake
+  relayer-stake
   ;;
 
 'burn-tokens')
-  confirmation burn-tokens
+  burn-tokens
   ;;
 
 'deploy-bridge-contracts')
   echo -e 
   echo "PREREQUIREMENTS: AGGREGATOR & BRIDGED_TOKENS_WRAPPER deployed"
   echo -e 
-  confirmation deploy-bridge-contracts
+  deploy-bridge-contracts
   ;;
 
 'create-safe-transaction')
-  confirmation create-safe-transaction
+  create-safe-transaction
   ;;
 
 'add-relayer')
-  confirmation addBoardMember
+  addBoardMember
   ;;
 
 'remove-relayer')
-  confirmation removeBoardMember
+  removeBoardMember
+  ;;
+
+'issue-base-token')
+  issue-base-token
   ;;
 
 'whitelist-token')
@@ -58,7 +62,7 @@ case "$1" in
   echo "Check and update TOKENS SETTINGS section in configs.cfg"
   source $SCRIPTPATH/config/configs.cfg
   echo -e
-  confirmation whitelist-token
+  whitelist-token
   ;;
 
 'remove-whitelist-token')
@@ -67,47 +71,51 @@ case "$1" in
   echo "Check and update TOKENS SETTINGS section in configs.cfg"
   source $SCRIPTPATH/config/configs.cfg
   echo -e
-  confirmation remove-whitelist-token
+  remove-whitelist-token
   ;;
 
 'set-safe-max-tx')
-  confirmation set-safe-max-tx
+  set-safe-max-tx
   ;;
 
 'set-safe-batch-block-duration')
-  confirmation set-safe-batch-block-duration
+  set-safe-batch-block-duration
   ;;
 
 'change-quorum')
-  confirmation change-quorum
+  change-quorum
   ;;
 
 'pause-contracts')
-  confirmation pause-contracts
+  pause-contracts
   ;;
 
 'unpause-contracts')
-  confirmation unpause-contracts
+  unpause-contracts
   ;;
 
 'set-swap-fee')
-  confirmation set-fee
+  set-fee
   ;;
 
 'mint-chain-specific')
-  confirmation mint-chain-specific
+  mint-chain-specific
   ;;
 
 'mint-universal')
-  confirmation mint-universal
+  mint-universal
   ;;
 
 'upgrade-wrapper-universal-token')
-  confirmation upgrade-wrapper-universal-token   
+  upgrade-wrapper-universal-token   
   ;;
 
 'upgrade-wrapper-chain-specific-token')
-  confirmation upgrade-wrapper-chain-specific-token  
+  upgrade-wrapper-chain-specific-token  
+  ;;
+
+'full-setup')
+  full-setup  
   ;;
 
 *)

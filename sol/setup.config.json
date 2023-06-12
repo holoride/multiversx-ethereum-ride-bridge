@@ -1,11 +1,1 @@
-{
-    "erc20Safe": "0x7E90DbE83BCcbA5A571884CA4120088F69cd4ff3",
-    "bridge": "0x9b456c406aa628B2d8F483cE54479c06ee18B47b",
-    "relayers": ["0xed82c7a9d20128a80e17abc1f88505c0f01aa060"],
-    "tokens": [{
-        "0xc92a4b122e806267A4A440595f1b908A6fed79c3": {
-            "min": "0x00",
-            "max": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-        }
-    }]
-}
+{"erc20Safe":"0x3A03486d58E454811586d2871802F003C8c415A5","bridge":"0xf9ac9C32ABf75dCeA6AF5D7b266d1955A7036e8f","relayers":["0xed82c7a9d20128a80e17abc1f88505c0f01aa060"],"tokens":[{"0xC167968D1e296D3d5aC0AE1b923FA935FfDCd7bc":{"min":"0x00","max":"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}}]}

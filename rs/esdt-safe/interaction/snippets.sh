@@ -29,7 +29,7 @@ deploy() {
     erdpy --verbose contract deploy --project=${PROJECT} --recall-nonce --pem=${ALICE} \
     --gas-limit=100000000 \
     --arguments ${ETHEREUM_FEE_PREPAY_SC_ADDRESS} ${WRAPPED_EGLD_TOKEN_ID} ${WRAPPED_ETH_TOKEN_ID} \
-    --send --outfile="deploy-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --outfile="deploy-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(erdpy data parse --file="deploy-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
     ADDRESS=$(erdpy data parse --file="deploy-testnet.interaction.json" --expression="data['emitted_tx']['address']")
@@ -43,7 +43,7 @@ deploy() {
 
 upgrade() {
     erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${ALICE} \
-    --gas-limit=100000000 --send --outfile="upgrade.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --gas-limit=100000000 --send --wait-result --outfile="upgrade.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 }
 
 issueWrappedEth() {
@@ -57,7 +57,7 @@ issueWrappedEth() {
     erdpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --value=5000000000000000000 --function="issue" \
     --arguments ${TOKEN_DISPLAY_NAME} ${TOKEN_TICKER} ${INITIAL_SUPPLY} ${NR_DECIMALS} ${CAN_ADD_SPECIAL_ROLES} ${TRUE} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 setLocalRolesWrappedEgld() {
@@ -67,7 +67,7 @@ setLocalRolesWrappedEgld() {
     erdpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments ${WRAPPED_EGLD_TOKEN_ID} ${ADDRESS_HEX} ${LOCAL_BURN_ROLE} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 setLocalRolesWrappedEth() {
@@ -77,13 +77,13 @@ setLocalRolesWrappedEth() {
     erdpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments ${WRAPPED_ETH_TOKEN_ID} ${ADDRESS_HEX} ${LOCAL_BURN_ROLE} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 getNextPendingTransaction() {
     erdpy --verbose contract call ${ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=25000000 --function="getNextPendingTransaction" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 setTransactionExecuted() {
@@ -95,7 +95,7 @@ setTransactionExecuted() {
     erdpy --verbose contract call ${ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=90000000 --function="setTransactionStatus" \
     --arguments ${RELAYER_REWARD_ADDRESS} ${ORIGINAL_TX_SENDER} ${TX_NONCE} ${TX_STATUS} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 setTransactionRejected() {
@@ -107,7 +107,7 @@ setTransactionRejected() {
     erdpy --verbose contract call ${ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=90000000 --function="setTransactionStatus" \
     --arguments ${RELAYER_REWARD_ADDRESS} ${ORIGINAL_TX_SENDER} ${TX_NONCE} ${TX_STATUS} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}D}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}D}
 }
 
 createTransaction() {
@@ -118,7 +118,7 @@ createTransaction() {
     erdpy --verbose contract call ${ADDRESS} --recall-nonce --pem=${BOB} \
     --gas-limit=50000000 --function="ESDTTransfer" \
     --arguments ${WRAPPED_EGLD_TOKEN_IDENTIFIER} 0x64 ${CREATE_TRANSACTION_ENDPOINT} ${DEST_ADDRESS} ${TOKEN_USED_FOR_TX_FEES} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 # views

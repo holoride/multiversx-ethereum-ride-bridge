@@ -4,7 +4,7 @@ deploySafe() {
     mxpy --verbose contract deploy --bytecode=${SAFE_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=150000000 \
     --arguments ${AGGREGATOR} 1 \
-    --send --outfile="deploy-safe-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --outfile="deploy-safe-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="./deploy-safe-testnet.interaction.json" --expression="data['emittedTransactionHash']")
     ADDRESS=$(mxpy data parse --file="./deploy-safe-testnet.interaction.json" --expression="data['contractAddress']")
@@ -22,7 +22,7 @@ setLocalRolesEsdtSafe() {
     mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${SAFE} str:ESDTRoleLocalBurn \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 unsetLocalRolesEsdtSafe() {
@@ -31,7 +31,7 @@ unsetLocalRolesEsdtSafe() {
     mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="unSetSpecialRole" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${SAFE} str:ESDTRoleLocalBurn \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 createTransaction() { # Transfer chain specific token to eth
@@ -40,6 +40,6 @@ createTransaction() { # Transfer chain specific token to eth
     mxpy --verbose contract call ${SAFE} --recall-nonce --pem=${ALICE} \
     --gas-limit=50000000 --function="ESDTTransfer" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${VALUE_TO_SEND} str:createTransaction ${ETH_ADDRESS} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 

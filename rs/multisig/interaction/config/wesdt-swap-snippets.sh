@@ -1,46 +1,56 @@
 deployWesdtSwap() {
+    CHECK_VARIABLES WESDT_SWAP_WASM
+
     mxpy --verbose contract deploy --bytecode=${WESDT_SWAP_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=100000000 \
-    --arguments ${UNIVERSAL_TOKEN} \
-    --send --outfile="deploy-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --arguments str:UVT-aa1a0e str:UVT-aa1a0e \
+    --send --wait-result --outfile="deploy-wesdt-swap-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
-    TRANSACTION=$(mxpy data parse --file="deploy-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
-    ADDRESS=$(mxpy data parse --file="deploy-testnet.interaction.json" --expression="data['emitted_tx']['address']")
+    TRANSACTION=$(mxpy data parse --file="deploy-wesdt-swap-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
+    ADDRESS=$(mxpy data parse --file="deploy-wesdt-swap-testnet.interaction.json" --expression="data['emitted_tx']['address']")
 
     mxpy data store --key=address-testnet --value=${ADDRESS}
-    mxpy data store --key=deployTransaction-testnet-egld-esdt-swap --value=${TRANSACTION}
+    mxpy data store --key=deployTransaction-testnet-wesdt-esdt-swap --value=${TRANSACTION}
 
     echo ""
     echo "Smart contract address: ${ADDRESS}"
 }
 
 upgradeWesdtSwap() {
+    CHECK_VARIABLES UNIVERSAL_TOKEN
+
     mxpy --verbose contract upgrade ${ADDRESS} --bytecode=${WESDT_SWAP_WASM} --recall-nonce --pem=${ALICE} \
     --arguments ${UNIVERSAL_TOKEN} --gas-limit=100000000 --outfile="upgrade.json" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID} || return
 }
 
 setLocalRolesWesdtSwap() {
+    CHECK_VARIABLES UNIVERSAL_TOKEN WESDT_SWAP
+
     local ADDRESS_HEX = $(mxpy wallet bech32 --decode ${WESDT_SWAP})
 
     mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments ${UNIVERSAL_TOKEN} ${ADDRESS_HEX} str:ESDTRoleLocalMint str:ESDTRoleLocalBurn \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 wrapEsdt() {
+    CHECK_VARIABLES BASE_TOKEN WESDT_SWAP
+
     mxpy --verbose contract call ${WESDT_SWAP} --recall-nonce --pem=${ALICE} \
     --gas-limit=10000000 --function="ESDTTransfer" \
     --arguments ${BASE_TOKEN} ${VALUE_TO_SEND} str:wrapEsdt \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 unwrapEsdt() {
+    CHECK_VARIABLES UNIVERSAL_TOKEN WESDT_SWAP
+
     mxpy --verbose contract call ${WESDT_SWAP} --recall-nonce --pem=${ALICE} \
     --gas-limit=10000000 --function="ESDTTransfer" \
     --arguments ${UNIVERSAL_TOKEN} ${VALUE_TO_SEND} str:unwrapEsdt \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 getWrappedEsdtTokenIdentifier() {

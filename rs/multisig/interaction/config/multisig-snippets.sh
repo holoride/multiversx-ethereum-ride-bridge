@@ -8,7 +8,7 @@ deployMultisig() {
     --arguments ${SAFE} ${MULTI_TRANSFER} \
     ${MIN_STAKE} ${SLASH_AMOUNT} ${QUORUM} \
     ${RELAYER_ADDR_0} \
-    --send --outfile="deploy-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --outfile="deploy-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="./deploy-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
     ADDRESS=$(mxpy data parse --file="./deploy-testnet.interaction.json" --expression="data['contractAddress']")
@@ -26,7 +26,7 @@ changeChildContractsOwnershipSafe() {
     mxpy --verbose contract call ${SAFE} --recall-nonce --pem=${ALICE} \
     --gas-limit=10000000 --function="ChangeOwnerAddress" \
     --arguments ${MULTISIG} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 changeChildContractsOwnershipMultiTransfer() {
@@ -35,7 +35,7 @@ changeChildContractsOwnershipMultiTransfer() {
     mxpy --verbose contract call ${MULTI_TRANSFER} --recall-nonce --pem=${ALICE} \
     --gas-limit=10000000 --function="ChangeOwnerAddress" \
     --arguments ${MULTISIG} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 clearMapping() {
@@ -44,7 +44,7 @@ clearMapping() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="clearMapping" \
     --arguments ${ERC20_TOKEN} str:${CHAIN_SPECIFIC_TOKEN} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 addMapping() {
@@ -53,7 +53,7 @@ addMapping() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="addMapping" \
     --arguments ${ERC20_TOKEN} str:${CHAIN_SPECIFIC_TOKEN} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 addTokenToWhitelist() {
@@ -62,7 +62,7 @@ addTokenToWhitelist() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="esdtSafeAddTokenToWhitelist" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} str:${CHAIN_SPECIFIC_TOKEN_TICKER} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 removeTokenFromWhitelist() {
@@ -71,7 +71,7 @@ removeTokenFromWhitelist() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="esdtSafeRemoveTokenFromWhitelist" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 esdtSafeSetMaxTxBatchSize() {
@@ -80,7 +80,7 @@ esdtSafeSetMaxTxBatchSize() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=30000000 --function="esdtSafeSetMaxTxBatchSize" \
     --arguments ${MAX_TX_PER_BATCH} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 esdtSafeSetMaxTxBatchBlockDuration() {
@@ -89,7 +89,7 @@ esdtSafeSetMaxTxBatchBlockDuration() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=30000000 --function="esdtSafeSetMaxTxBatchBlockDuration" \
     --arguments ${MAX_TX_BLOCK_DURATION_PER_BATCH} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 clearMapping() {
@@ -98,7 +98,7 @@ clearMapping() {
      mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="clearMapping" \
     --arguments ${ERC20_TOKEN} str:${CHAIN_SPECIFIC_TOKEN} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 changeQuorum() {
@@ -107,7 +107,7 @@ changeQuorum() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="changeQuorum" \
     --arguments ${QUORUM} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 pause() {
@@ -115,7 +115,7 @@ pause() {
 
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="pause" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 pauseEsdtSafe() {
@@ -123,7 +123,7 @@ pauseEsdtSafe() {
 
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="pauseEsdtSafe" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 unpause() {
@@ -131,7 +131,7 @@ unpause() {
 
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="unpause" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 unpauseEsdtSafe() {
@@ -139,7 +139,7 @@ unpauseEsdtSafe() {
 
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="unpauseEsdtSafe" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 esdtSafeSetMaxBridgedAmountForToken() {
@@ -149,7 +149,7 @@ esdtSafeSetMaxBridgedAmountForToken() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="esdtSafeSetMaxBridgedAmountForToken" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${MAX} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 multiTransferEsdtSetMaxBridgedAmountForToken() {
@@ -159,5 +159,5 @@ multiTransferEsdtSetMaxBridgedAmountForToken() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="multiTransferEsdtSetMaxBridgedAmountForToken" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${MAX} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }

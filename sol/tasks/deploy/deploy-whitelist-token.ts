@@ -14,11 +14,11 @@ task("deploy-whitelist-token", "Deploys ERC20 contract to use to test the bridge
   // deploy contracts
   const genericERC20Factory = await hre.ethers.getContractFactory("GenericERC20");
 
-  const usdcContract = await genericERC20Factory.deploy("USDC", "USDC");
-  await usdcContract.deployed();
-  await usdcContract.mint(deployer.address, ethers.utils.formatUnits(10_000_000));
+  const xContract = await genericERC20Factory.deploy("Wrapped XX", "WXX");
+  await xContract.deployed();
+  await xContract.mint(deployer.address, ethers.utils.parseUnits("1000000000")); // equivalant to RIDE supply on Multiversx ( will be sent to safe contract in init-supply )
 
-  const address = usdcContract.address;
+  const address = xContract.address;
 
   //whitelist tokens in safe
   console.log("Whitelisting token ", address);

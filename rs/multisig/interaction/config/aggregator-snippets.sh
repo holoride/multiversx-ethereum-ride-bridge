@@ -3,7 +3,7 @@ deployAggregator() {
 
     mxpy --verbose contract deploy --bytecode=${AGGREGATOR_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=100000000 --arguments 1 0 ${ALICE_ADDRESS} \
-    --send --outfile=deploy-price-agregator-testnet.interaction.json --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --outfile=deploy-price-agregator-testnet.interaction.json --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="./deploy-price-agregator-testnet.interaction.json" --expression="data['emittedTransactionHash']")
     ADDRESS=$(mxpy data parse --file="./deploy-price-agregator-testnet.interaction.json" --expression="data['contractAddress']")
@@ -23,7 +23,7 @@ submitAggregatorBatch() {
     mxpy --verbose contract call ${AGGREGATOR} --recall-nonce --pem=${ALICE} \
     --gas-limit=15000000 --function="submitBatch" \
     --arguments str:GWEI str:${CHAIN_SPECIFIC_TOKEN_TICKER} ${FEE} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID} || return
 }
 
 pauseAggregator() {
@@ -31,7 +31,7 @@ pauseAggregator() {
 
     mxpy --verbose contract call ${AGGREGATOR} --recall-nonce --pem=${ALICE} \
     --gas-limit=5000000 --function="pause" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID} || return
 }
 
 unpauseAggregator() {
@@ -39,5 +39,5 @@ unpauseAggregator() {
 
     mxpy --verbose contract call ${AGGREGATOR} --recall-nonce --pem=${ALICE} \
     --gas-limit=5000000 --function="unpause" \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID} || return
 }

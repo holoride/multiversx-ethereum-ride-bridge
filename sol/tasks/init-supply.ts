@@ -1,13 +1,12 @@
 import { task } from "hardhat/config";
 import { getDeployOptions } from "./args/deployOptions";
+import { ethers } from "ethers";
 
 task("init-supply", "Deposit the initial supply on a new SC from an old one")
-  .addParam("amount", "New amount we want to set (full value, with 18 decimals)")
   .addOptionalParam("price", "Gas price in gwei for this transaction", undefined)
   .setAction(async (taskArgs, hre) => {
     const [adminWallet] = await hre.ethers.getSigners();
     const fs = require("fs");
-    const amount = taskArgs.amount;
     const config = JSON.parse(fs.readFileSync("setup.config.json", "utf8"));
     const safeAddress = config["erc20Safe"];
     const token = Object.keys(config["tokens"][0])[0];
@@ -18,10 +17,13 @@ task("init-supply", "Deposit the initial supply on a new SC from an old one")
         .attach(token)
         .connect(adminWallet);
     
-    await tokenContract.approve(
+    const tx = await tokenContract.approve(
       safeAddress,
       "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
       getDeployOptions(taskArgs),
     );
+    await tx.wait();
+
+    const amount = ethers.utils.parseUnits("1000000000"); // equivalant to RIDE supply on Multiversx
     await safe.initSupply(token, amount, getDeployOptions(taskArgs));
   });

@@ -33,7 +33,7 @@ eth
             will:
                 - deploy safe
                 - set data on config file
-        command: npx hardhat --network sepolia deploy-safe
+        command: yarn hardhat --network sepolia deploy-safe
 
     - deploy bridge, whitelist relayers
         task: deploy/bridge.ts
@@ -50,23 +50,25 @@ eth
         task: deploy/set-bridge-on-safe.ts
             will:
                 - do dat
-        command: npx hardhat --network sepolia set-bridge-on-safe
+        command: yarn hardhat --network sepolia set-bridge-on-safe
 
     - create and whitelist token on safe
         task: deploy/deploy-whitelist-token.ts
             will:
                 - do dat
-        command: npx hardhat --network sepolia deploy-whitelist-token 
-
-    - unpause safe
-        task: deploy/unpause-safe.ts
-
-    - unpause bridge
-        task: deploy/unpause-bridge.ts
+        command: yarn hardhat --network sepolia deploy-whitelist-token 
 
     - init supply on safe
         task: deploy/init-supply.ts
-        command: AMOUNT={amount of RIDE supply for swapping} && npx hardhat --network sepolia init-supply --amount $AMOUNT
+        command: yarn hardhat --network sepolia init-supply
+
+    - unpause safe
+        task: deploy/unpause-safe.ts
+        command: yarn hardhat --network sepolia unpause-safe 
+
+    - unpause bridge
+        task: deploy/unpause-bridge.ts
+        command: yarn hardhat --network sepolia unpause-bridge 
 
     - open setup.config.json
     - copy tokens[0] for multiversx

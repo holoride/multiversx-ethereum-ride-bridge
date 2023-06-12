@@ -17,7 +17,7 @@ WRAPPED_ETH_TOKEN_ID=0x
 deploy() {
     erdpy --verbose contract deploy --project=${PROJECT} \
     --arguments ${WRAPPED_EGLD_TOKEN_ID} ${WRAPPED_ETH_TOKEN_ID} \
-    --recall-nonce --pem=${ALICE} --gas-limit=100000000 --send \
+    --recall-nonce --pem=${ALICE} --gas-limit=100000000 --send --wait-result \
     --outfile="deploy-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(erdpy data parse --file="deploy-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
@@ -32,7 +32,7 @@ deploy() {
 
 upgrade() {
     erdpy --verbose contract upgrade ${ADDRESS} --project=${PROJECT} --recall-nonce --pem=${ALICE} \
-    --gas-limit=100000000 --send --outfile="upgrade.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    --gas-limit=100000000 --send --wait-result --outfile="upgrade.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 }
 
 setLocalRolesWrappedEgld() {
@@ -42,7 +42,7 @@ setLocalRolesWrappedEgld() {
     erdpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments ${WRAPPED_EGLD_TOKEN_ID} ${ADDRESS_HEX} ${LOCAL_MINT_ROLE} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 setLocalRolesWrappedEth() {
@@ -52,7 +52,7 @@ setLocalRolesWrappedEth() {
     erdpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments ${WRAPPED_ETH_TOKEN_ID} ${ADDRESS} ${LOCAL_MINT_ROLE} \
-    --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
 transferEsdtToken() {
@@ -62,5 +62,5 @@ transferEsdtToken() {
 
     erdpy --verbose contract call ${ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=10000000 --function="transferEsdtToken" \
-    --arguments ${DEST_ADDRESS} ${TOKEN_ID} ${AMOUNT} --send --proxy=${PROXY} --chain=${CHAIN_ID}
+    --arguments ${DEST_ADDRESS} ${TOKEN_ID} ${AMOUNT} --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
