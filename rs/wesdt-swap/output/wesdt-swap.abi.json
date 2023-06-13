@@ -1,0 +1,162 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.71.0-nightly",
+            "commitHash": "dbba594575ce75b1b57ccb1e4223b9909a28b1b8",
+            "commitDate": "2023-05-01",
+            "channel": "Nightly",
+            "short": "rustc 1.71.0-nightly (dbba59457 2023-05-01)"
+        },
+        "contractCrate": {
+            "name": "wesdt-swap",
+            "version": "0.0.0",
+            "git_version": "495654c-modified"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.32.0"
+        }
+    },
+    "name": "EsdtWEsdtSwap",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "wrapped_esdt_token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "esdt_token_id",
+                "type": "TokenIdentifier"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "wrapEsdt",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "EsdtTokenPayment"
+                }
+            ]
+        },
+        {
+            "name": "unwrapEsdt",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "getLockedEsdtBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getWrappedEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "getEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "isPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "pause",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "unpause",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        }
+    ],
+    "events": [],
+    "hasCallback": false,
+    "types": {
+        "EsdtTokenPayment": {
+            "type": "struct",
+            "fields": [
+                {
+                    "name": "token_type",
+                    "type": "EsdtTokenType"
+                },
+                {
+                    "name": "token_identifier",
+                    "type": "TokenIdentifier"
+                },
+                {
+                    "name": "token_nonce",
+                    "type": "u64"
+                },
+                {
+                    "name": "amount",
+                    "type": "BigUint"
+                }
+            ]
+        },
+        "EsdtTokenType": {
+            "type": "enum",
+            "variants": [
+                {
+                    "name": "Fungible",
+                    "discriminant": 0
+                },
+                {
+                    "name": "NonFungible",
+                    "discriminant": 1
+                },
+                {
+                    "name": "SemiFungible",
+                    "discriminant": 2
+                },
+                {
+                    "name": "Meta",
+                    "discriminant": 3
+                },
+                {
+                    "name": "Invalid",
+                    "discriminant": 4
+                }
+            ]
+        }
+    }
+}

@@ -1,6 +1,6 @@
 [Eth]
     Chain = "Ethereum"
-    NetworkAddress = "https://sepolia.infura.io/v3/f97f529377f6498c8293587deb03bf9c" # a network address
+    NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
     MultisigContractAddress = "0xf9ac9C32ABf75dCeA6AF5D7b266d1955A7036e8f" # the eth address for the bridge contract
     SafeContractAddress = "0x3A03486d58E454811586d2871802F003C8c415A5"
     PrivateKeyFile = "keys/ethereum.sk" # the path to the file containing the relayer eth private key

@@ -7,5 +7,7 @@ members = [
   "multisig",
   "multisig/meta",
   "bridged-tokens-wrapper",
-  "bridged-tokens-wrapper/meta"
+  "bridged-tokens-wrapper/meta",
+  "wesdt-swap",
+  "wesdt-swap/meta",
 ]

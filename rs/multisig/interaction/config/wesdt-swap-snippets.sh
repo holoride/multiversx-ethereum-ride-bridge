@@ -1,13 +1,13 @@
 deployWesdtSwap() {
-    CHECK_VARIABLES WESDT_SWAP_WASM
+    CHECK_VARIABLES WESDT_SWAP_WASM UNIVERSAL_TOKEN BASE_TOKEN
 
     mxpy --verbose contract deploy --bytecode=${WESDT_SWAP_WASM} --recall-nonce --pem=${ALICE} \
-    --gas-limit=100000000 \
+    --gas-limit=10000000 \
     --arguments str:UVT-aa1a0e str:UVT-aa1a0e \
     --send --wait-result --outfile="deploy-wesdt-swap-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="deploy-wesdt-swap-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
-    ADDRESS=$(mxpy data parse --file="deploy-wesdt-swap-testnet.interaction.json" --expression="data['emitted_tx']['address']")
+    ADDRESS=$(mxpy data parse --file="./deploy-wesdt-swap-testnet.interaction.json" --expression="data['contractAddress']")
 
     mxpy data store --key=address-testnet --value=${ADDRESS}
     mxpy data store --key=deployTransaction-testnet-wesdt-esdt-swap --value=${TRANSACTION}
