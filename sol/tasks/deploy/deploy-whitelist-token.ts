@@ -14,7 +14,7 @@ task("deploy-whitelist-token", "Deploys ERC20 contract to use to test the bridge
   // deploy contracts
   const genericERC20Factory = await hre.ethers.getContractFactory("GenericERC20");
 
-  const xContract = await genericERC20Factory.deploy("Wrapped XX", "WXX");
+  const xContract = await genericERC20Factory.deploy("Wrapped RTest", "WRTEST");
   await xContract.deployed();
   await xContract.mint(deployer.address, 1000000000); // equivalant to RIDE supply on Multiversx ( will be sent to safe contract in init-supply )
 

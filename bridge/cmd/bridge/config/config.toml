@@ -23,7 +23,7 @@
 
 [MultiversX]
     NetworkAddress = "https://devnet-gateway.multiversx.com" # the network address
-    MultisigContractAddress = "erd1qqqqqqqqqqqqqpgqnztj4edp603gp6rrgst48ea6rh4kfl4wg4sst0fkm2" # the multiversx address for the bridge contract
+    MultisigContractAddress = "erd1qk88q7p5cs7htxy4mnmvsszd2wul9kt5h4zu567368ftq2n3nt9qzgv4pt" # the multiversx address for the bridge contract
     PrivateKeyFile = "keys/multiversx.pem" # the path to the pem file containing the relayer multiversx wallet
     IntervalToResendTxsInSeconds = 60 # the time in seconds between nonce reads
     MaxRetriesOnQuorumReached = 3
