@@ -3,7 +3,7 @@
     NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
     MultisigContractAddress = "0xBeB9B74165003858347dea7e09B8Bc89f1e0b31A" # the eth address for the bridge contract
     SafeContractAddress = "0x8bb543b0b6AED6c348A5a0390D6D3c4dBfFB6557"
-    PrivateKeyFile = "keys/ethereum.sk" # the path to the file containing the relayer eth private key
+    PrivateKeyFile = "keys/ethereum-2.sk" # the path to the file containing the relayer eth private key
     GasLimitBase = 350000
     GasLimitForEach = 30000
     IntervalToWaitForTransferInSeconds = 30 #10 minutes
