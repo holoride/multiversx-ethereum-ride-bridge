@@ -118,6 +118,10 @@ case "$1" in
   full-setup  
   ;;
 
+'add-universal-to-bridge')
+  add-universal-to-bridge  
+  ;;
+
 *)
   echo "Usage: Invalid choice: '"$1"'" 
   echo -e 
