@@ -84,7 +84,6 @@ docs info:
        - cargo +nightly build
        - ./build-wasm.sh
     - deploy contracts
-        - NOTE: wait 10-15 secs between calls, or check on chain to see if the tx went through. some txes have dependencies on earlier executions so you must wait for each one to complete.
         - after each deploy, configs.cfg will be updated automatically.
         - cd multisig/interaction
         - mkdir walletsRelay
@@ -94,14 +93,17 @@ docs info:
             - command: ./script.sh deploy-aggregator
             - what:
                 deploys aggregator contract (used to get eth fees)
+
         - deploy bridge tokens wrapper
             - ./script.sh deploy-wrapper
+
         - deploy bridge contracts
             - ./script.sh deploy-bridge-contracts
             - what:
                 deploys the safe (where users deposit to),
                 deploys the MultiTransfer contract
                 deploys the multisig (controller contract, multisig for the relayers)
+
         - whitelist token
             - command: ./script.sh whitelist-token
               what:  
@@ -112,8 +114,8 @@ docs info:
         - unpause contracts
             - command ./script.sh unpause-contracts
 
-        - deploy base token (to be swapped 1:1 with universal token):
-            - command ./script.sh issue-base-token
+        - add universal token to bridge (have to give mint/burn role to bridge)
+            - command ./script.sh add-universal-to-bridge
 
 relayer
     - cd bridge

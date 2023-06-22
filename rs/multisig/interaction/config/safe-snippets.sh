@@ -1,9 +1,12 @@
 deploySafe() {
-    CHECK_VARIABLES SAFE_WASM AGGREGATOR
+    CHECK_VARIABLES SAFE_WASM AGGREGATOR ALICE_ADDRESS ETH_TX_GAS_LIMIT SERVICE_FEE_PERCENTAGE \
+    MAX_SERVICE_FEE NR_DECIMALS_UNIVERSAL
+
+    MAX_SERVICE_FEE_WITH_DECIMALS=$(echo "$MAX_SERVICE_FEE*10^$NR_DECIMALS_UNIVERSAL" | bc)
     
     mxpy --verbose contract deploy --bytecode=${SAFE_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=150000000 \
-    --arguments ${AGGREGATOR} 1 \
+    --arguments ${AGGREGATOR} ${ALICE_ADDRESS} ${ETH_TX_GAS_LIMIT} ${SERVICE_FEE_PERCENTAGE} ${MAX_SERVICE_FEE_WITH_DECIMALS}  \
     --send --wait-result --outfile="deploy-safe-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="./deploy-safe-testnet.interaction.json" --expression="data['emittedTransactionHash']")

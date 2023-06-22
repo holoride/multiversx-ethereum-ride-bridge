@@ -27,10 +27,19 @@ pub trait EsdtSafe:
     /// eth_tx_gas_limit - The gas limit that will be used for transactions on the ETH side.
     /// Will be used to compute the fees for the transfer
     #[init]
-    fn init(&self, fee_estimator_contract_address: ManagedAddress, eth_tx_gas_limit: BigUint) {
+    fn init(&self, 
+            fee_estimator_contract_address: ManagedAddress, 
+            service_fee_contract_address: ManagedAddress, 
+            eth_tx_gas_limit: BigUint,
+            service_fee_percentage: BigUint,
+            max_service_fee: BigUint) {
         self.fee_estimator_contract_address()
             .set(&fee_estimator_contract_address);
+        self.service_fee_contract_address()
+            .set(&service_fee_contract_address);
         self.eth_tx_gas_limit().set(&eth_tx_gas_limit);
+        self.service_fee_percentage().set(&service_fee_percentage);
+        self.max_service_fee().set(&max_service_fee);
 
         self.max_tx_batch_size()
             .set_if_empty(DEFAULT_MAX_TX_BATCH_SIZE);
@@ -85,12 +94,13 @@ pub trait EsdtSafe:
                     // tokens will remain locked forever in that case
                     // otherwise, the whole batch would fail
                     if self.is_local_role_set(&tx.token_identifier, &EsdtLocalRole::Burn) {
+                        self.send_service_fee(&tx.token_identifier, &tx.service_fee);
                         self.burn_esdt_token(&tx.token_identifier, &tx.amount);
                     }
                 }
                 TransactionStatus::Rejected => {
                     let addr = ManagedAddress::try_from(tx.from).unwrap();
-                    self.mark_refund(&addr, &tx.token_identifier, &tx.amount);
+                    self.mark_refund(&addr, &tx.token_identifier, &tx.amount, &tx.service_fee);
                 }
                 _ => {
                     sc_panic!("Transaction status may only be set to Executed or Rejected");
@@ -147,6 +157,7 @@ pub trait EsdtSafe:
                 to: refund_tx.from,
                 token_identifier: refund_tx.token_identifier,
                 amount: actual_bridged_amount,
+                service_fee: refund_tx.service_fee,
                 is_refund_tx: true,
             };
             new_transactions.push(new_tx);
@@ -185,12 +196,16 @@ pub trait EsdtSafe:
             "Transaction fees cost more than the entire bridged amount"
         );
 
+
         self.require_below_max_amount(&payment_token, &payment_amount);
 
         self.accumulated_transaction_fees(&payment_token)
             .update(|fees| *fees += &required_fee);
 
-        let actual_bridged_amount = payment_amount - required_fee;
+        let amount_including_gas_fee = payment_amount - required_fee;
+        let service_fee = self.calculate_service_fee(&amount_including_gas_fee);
+        let actual_bridged_amount = amount_including_gas_fee - &service_fee;
+
         let caller = self.blockchain().get_caller();
         let tx_nonce = self.get_and_save_next_tx_id();
         let tx = Transaction {
@@ -200,6 +215,7 @@ pub trait EsdtSafe:
             to: to.as_managed_buffer().clone(),
             token_identifier: payment_token,
             amount: actual_bridged_amount,
+            service_fee: service_fee,
             is_refund_tx: false,
         };
 
@@ -247,9 +263,15 @@ pub trait EsdtSafe:
         self.send().esdt_local_burn(token_id, 0, amount);
     }
 
-    fn mark_refund(&self, to: &ManagedAddress, token_id: &TokenIdentifier, amount: &BigUint) {
+    fn mark_refund(&self, to: &ManagedAddress, token_id: &TokenIdentifier, amount: &BigUint, service_fee: &BigUint) {
         self.refund_amount(to, token_id)
-            .update(|refund| *refund += amount);
+            .update(|refund| *refund += amount + service_fee);
+    }
+
+    fn send_service_fee(&self, token_id: &TokenIdentifier, amount: &BigUint) {
+        let service_fee_contract_address = self.service_fee_contract_address().get();
+        self.send()
+            .direct_esdt(&service_fee_contract_address, token_id, 0, &amount, &[]);
     }
 
     // events

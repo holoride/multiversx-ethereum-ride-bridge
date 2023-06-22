@@ -5,6 +5,8 @@ elrond_wasm::imports!();
 mod aggregator_proxy;
 pub use aggregator_proxy::*;
 
+const MAX_PERCENTAGE: u64 = 10_000; // 100%
+
 #[elrond_wasm::module]
 pub trait FeeEstimatorModule {
     #[only_owner]
@@ -14,9 +16,27 @@ pub trait FeeEstimatorModule {
     }
 
     #[only_owner]
+    #[endpoint(setServiceFeeContractAddress)]
+    fn set_service_fee_contract_address(&self, new_address: ManagedAddress) {
+        self.service_fee_contract_address().set(&new_address);
+    }
+
+    #[only_owner]
     #[endpoint(setEthTxGasLimit)]
     fn set_eth_tx_gas_limit(&self, new_limit: BigUint) {
         self.eth_tx_gas_limit().set(&new_limit);
+    }
+
+    #[only_owner]
+    #[endpoint(setServiceFeePercentage)]
+    fn set_service_fee_percentage(&self, new_limit: BigUint) {
+        self.service_fee_percentage().set(&new_limit);
+    }
+
+    #[only_owner]
+    #[endpoint(setMaxServiceFee)]
+    fn set_max_service_fee(&self, new_limit: BigUint) {
+        self.max_service_fee().set(&new_limit);
     }
 
     /// Default price being used if the aggregator lacks a mapping for this token
@@ -46,6 +66,20 @@ pub trait FeeEstimatorModule {
         let gas_limit = self.eth_tx_gas_limit().get();
 
         price_per_gas_unit * gas_limit
+    }
+
+    /// Returns the fee for using the service: service fee percentage or max token amount,
+    /// whichever is lower.
+    #[view(calculateServiceFee)]
+    fn calculate_service_fee(&self, token_amount: &BigUint) -> BigUint {
+
+        let service_fee_percentage = self.service_fee_percentage().get();
+        let max_service_fee = self.max_service_fee().get();
+
+        let service_fee_percentage_amount = token_amount * &service_fee_percentage / MAX_PERCENTAGE;
+
+        if service_fee_percentage_amount > max_service_fee { max_service_fee } 
+        else { service_fee_percentage_amount }
     }
 
     fn get_price_per_gas_unit(&self, token_id: &TokenIdentifier) -> BigUint {
@@ -88,6 +122,10 @@ pub trait FeeEstimatorModule {
     #[storage_mapper("feeEstimatorContractAddress")]
     fn fee_estimator_contract_address(&self) -> SingleValueMapper<ManagedAddress>;
 
+    #[view(getServiceFeeContractAddress)]
+    #[storage_mapper("serviceFeeContractAddress")]
+    fn service_fee_contract_address(&self) -> SingleValueMapper<ManagedAddress>;
+
     #[view(getDefaultPricePerGasUnit)]
     #[storage_mapper("defaultPricePerGasUnit")]
     fn default_price_per_gas_unit(&self, token_id: &TokenIdentifier) -> SingleValueMapper<BigUint>;
@@ -98,4 +136,12 @@ pub trait FeeEstimatorModule {
     #[view(getEthTxGasLimit)]
     #[storage_mapper("ethTxGasLimit")]
     fn eth_tx_gas_limit(&self) -> SingleValueMapper<BigUint>;
+
+    #[view(getServiceFeePercentage)]
+    #[storage_mapper("serviceFeePercentage")]
+    fn service_fee_percentage(&self) -> SingleValueMapper<BigUint>;
+
+    #[view(getMaxServiceFee)]
+    #[storage_mapper("maxServiceFee")]
+    fn max_service_fee(&self) -> SingleValueMapper<BigUint>;
 }

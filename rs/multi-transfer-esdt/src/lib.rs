@@ -118,6 +118,7 @@ pub trait MultiTransferEsdt:
             to: eth_tx.to.as_managed_buffer().clone(),
             token_identifier: eth_tx.token_id,
             amount: eth_tx.amount,
+            service_fee: BigUint::from(0u32),
             is_refund_tx: true,
         }
     }

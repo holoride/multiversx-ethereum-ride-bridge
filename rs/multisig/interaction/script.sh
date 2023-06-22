@@ -114,6 +114,10 @@ case "$1" in
   upgrade-wrapper-chain-specific-token  
   ;;
 
+'add-universal-to-bridge')
+  add-universal-to-bridge  
+  ;;
+
 'full-setup')
   full-setup  
   ;;
