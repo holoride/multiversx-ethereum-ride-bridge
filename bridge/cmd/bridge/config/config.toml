@@ -1,8 +1,8 @@
 [Eth]
     Chain = "Ethereum"
     NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
-    MultisigContractAddress = "0xAC41b05D55993480B26F142AfD9123d0f578C1F9" # the eth address for the bridge contract
-    SafeContractAddress = "0xFDBd237685E4bd9c16b235cB60d2d564a8667c3b"
+    MultisigContractAddress = "" # the eth address for the bridge contract
+    SafeContractAddress = ""
     PrivateKeyFile = "../../../wallets/ethereum/account-0.sk" # the path to the file containing the relayer eth private key
     GasLimitBase = 350000
     GasLimitForEach = 30000

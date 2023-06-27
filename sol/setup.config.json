@@ -1,1 +1,6 @@
-{"erc20Safe":"0xFDBd237685E4bd9c16b235cB60d2d564a8667c3b","bridge":"0xAC41b05D55993480B26F142AfD9123d0f578C1F9","relayers":["0xed82c7a9d20128a80e17abc1f88505c0f01aa060"],"tokens":[{"0xc7046c92b51E135571824E13ecd0aCc3eca24843":{"min":"0x00","max":"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}}]}
+{
+    "erc20Safe":"",
+    "bridge":"",
+    "relayers":[],
+    "tokens":[]
+}
