@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "wesdt-swap",
             "version": "0.0.0",
-            "git_version": "7b715a3-modified"
+            "git_version": "5d63098-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -32,6 +32,13 @@
         "outputs": []
     },
     "endpoints": [
+        {
+            "name": "recoverEsdt",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
         {
             "name": "wrapEsdt",
             "mutability": "mutable",

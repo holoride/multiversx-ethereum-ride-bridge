@@ -1,9 +1,9 @@
 [Eth]
     Chain = "Ethereum"
     NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
-    MultisigContractAddress = "0xea561fFf3653E2631478D90d79C12E44720203f2" # the eth address for the bridge contract
-    SafeContractAddress = "0xC6D4E90bEcE4639ab6AD5Ef47Bd23638e669B246"
-    PrivateKeyFile = "keys/ethereum.sk" # the path to the file containing the relayer eth private key
+    MultisigContractAddress = "0xAC41b05D55993480B26F142AfD9123d0f578C1F9" # the eth address for the bridge contract
+    SafeContractAddress = "0xFDBd237685E4bd9c16b235cB60d2d564a8667c3b"
+    PrivateKeyFile = "../../../wallets/ethereum/account-0.sk" # the path to the file containing the relayer eth private key
     GasLimitBase = 350000
     GasLimitForEach = 30000
     IntervalToWaitForTransferInSeconds = 30 #10 minutes
@@ -23,8 +23,8 @@
 
 [MultiversX]
     NetworkAddress = "https://devnet-gateway.multiversx.com" # the network address
-    MultisigContractAddress = "erd1qqqqqqqqqqqqqpgqku4g8zfzzsstpm8a8yh6vk4j28p2up0rnt9qe97sfz" # the multiversx address for the bridge contract
-    PrivateKeyFile = "keys/multiversx.pem" # the path to the pem file containing the relayer multiversx wallet
+    MultisigContractAddress = "erd1qqqqqqqqqqqqqpgqplqkq7xzy3mrrxusk4lgcy7djrklk7z5qc2sd92t4y" # the multiversx address for the bridge contract
+    PrivateKeyFile = "../../../wallets/multiversx/account-0.pem" # the path to the pem file containing the relayer multiversx wallet
     IntervalToResendTxsInSeconds = 60 # the time in seconds between nonce reads
     MaxRetriesOnQuorumReached = 3
     MaxRetriesOnWasTransferProposed = 3

@@ -5,17 +5,22 @@
 #![no_std]
 
 elrond_wasm_node::wasm_endpoints! {
-    wesdt_swap
+    price_aggregator
     (
-        getEsdtTokenId
-        getLockedEsdtBalance
-        getWrappedEsdtTokenId
+        addOracles
+        decimals
+        getOracles
         isPaused
+        latestPriceFeed
+        latestPriceFeedOptional
+        latestRoundData
         pause
-        recoverEsdt
+        removeOracles
+        setSubmissionCount
+        submission_count
+        submit
+        submitBatch
         unpause
-        unwrapEsdt
-        wrapEsdt
     )
 }
 

@@ -1,8 +1,10 @@
 addBoardMember() {
     CHECK_VARIABLES MULTISIG
 
+    read -p "Relayer address: " RELAYER_ADDR
+
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
-    --gas-limit=35000000 --function="addBoardMember" --arguments ${RELAYER_ADDR_0} \
+    --gas-limit=35000000 --function="addBoardMember" --arguments ${RELAYER_ADDR} \
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 

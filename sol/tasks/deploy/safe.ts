@@ -1,5 +1,4 @@
 import { task, types } from "hardhat/config";
-import { ethers } from "ethers";
 import { getDeployOptions } from "../args/deployOptions";
 
 task("deploy-safe", "Deploys ERC20Safe")

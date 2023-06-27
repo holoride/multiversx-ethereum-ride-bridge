@@ -17,3 +17,4 @@ Cargo.lock
 **/testnet/
 **/deploy-child-sc-spam.json
 multisig/interaction/*.json
+price-aggregator/wasm/target/*

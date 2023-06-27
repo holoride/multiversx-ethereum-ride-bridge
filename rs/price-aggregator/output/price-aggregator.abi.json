@@ -1,16 +1,16 @@
 {
     "buildInfo": {
         "rustc": {
-            "version": "1.60.0-nightly",
-            "commitHash": "bd3cb52565faab2755ff1bdb54d88bc91f47b4b9",
-            "commitDate": "2022-01-16",
+            "version": "1.71.0-nightly",
+            "commitHash": "dbba594575ce75b1b57ccb1e4223b9909a28b1b8",
+            "commitDate": "2023-05-01",
             "channel": "Nightly",
-            "short": "rustc 1.60.0-nightly (bd3cb5256 2022-01-16)"
+            "short": "rustc 1.71.0-nightly (dbba59457 2023-05-01)"
         },
         "contractCrate": {
             "name": "price-aggregator",
             "version": "0.0.1",
-            "git_version": "49b8105-modified"
+            "git_version": "5d63098-modified"
         },
         "framework": {
             "name": "elrond-wasm",

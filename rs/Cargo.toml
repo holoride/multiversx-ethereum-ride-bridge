@@ -10,4 +10,6 @@ members = [
   "bridged-tokens-wrapper/meta",
   "wesdt-swap",
   "wesdt-swap/meta",
+  "price-aggregator",
+  "price-aggregator/meta",
 ]
