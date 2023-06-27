@@ -3,6 +3,7 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./SharedStructs.sol";
 import "./access/BridgeRole.sol";
@@ -25,9 +26,15 @@ contract ERC20Safe is BridgeRole, Pausable {
     uint64 public batchesCount;
     uint64 public depositsCount;
     uint16 public batchSize = 10;
+    uint16 public serviceFeePercentage = 50; // 0.5%
+    uint16 public maxServiceFee = 2500;
     uint16 private constant maxBatchSize = 100;
+    uint16 private constant fullPercent = 100_00;
     uint8 public batchBlockLimit = 40;
     uint8 public batchSettleLimit = 40;
+    address public serviceFeeReceiver;
+
+    uint256 public serviceFees;
 
     mapping(uint256 => Batch) public batches;
     mapping(address => bool) public whitelistedTokens;
@@ -78,6 +85,19 @@ contract ERC20Safe is BridgeRole, Pausable {
     function setBatchBlockLimit(uint8 newBatchBlockLimit) external onlyAdmin {
         require(newBatchBlockLimit <= batchSettleLimit, "Cannot increase batch block limit over settlement limit");
         batchBlockLimit = newBatchBlockLimit;
+    }
+
+    function setServiceFeePercentage(uint16 newServiceFeePercentage) external onlyAdmin {
+        require(newServiceFeePercentage <= fullPercent, "Cannot set service fee percentage higher than full percent");
+        serviceFeePercentage = newServiceFeePercentage;
+    }
+
+    function setMaxServiceFee(uint16 newMaxServiceFee) external onlyAdmin {
+        maxServiceFee = newMaxServiceFee;
+    }
+
+    function setServiceFeeReceiver(address newServiceFeeReceiver) external onlyAdmin {
+        serviceFeeReceiver = newServiceFeeReceiver;
     }
 
     /**
@@ -157,15 +177,16 @@ contract ERC20Safe is BridgeRole, Pausable {
         }
 
         uint112 depositNonce = depositsCount + 1;
+        uint256 amountWithFees = _deductServiceFee(tokenAddress, amount);
         batchDeposits[batchesCount - 1].push(
-            Deposit(depositNonce, tokenAddress, amount, msg.sender, recipientAddress, DepositStatus.Pending)
+            Deposit(depositNonce, tokenAddress, amountWithFees, msg.sender, recipientAddress, DepositStatus.Pending)
         );
 
         batch.lastUpdatedBlockNumber = currentBlockNumber;
         batch.depositsCount++;
         depositsCount++;
 
-        tokenBalances[tokenAddress] += amount;
+        tokenBalances[tokenAddress] += amountWithFees;
 
         IERC20 erc20 = IERC20(tokenAddress);
         erc20.safeTransferFrom(msg.sender, address(this), amount);
@@ -219,6 +240,15 @@ contract ERC20Safe is BridgeRole, Pausable {
         }
 
         erc20.safeTransfer(msg.sender, availableForRecovery);
+    }
+
+    function claimServiceFees(address tokenAddress) external {
+        require(whitelistedTokens[tokenAddress], "Unsupported token");
+        IERC20 erc20 = IERC20(tokenAddress);
+
+        uint256 tokensToTransfer = serviceFees;
+        serviceFees = 0;
+        erc20.safeTransfer(serviceFeeReceiver, tokensToTransfer);
     }
 
     /**
@@ -290,5 +320,20 @@ contract ERC20Safe is BridgeRole, Pausable {
 
         Batch memory batch = batches[batchesCount - 1];
         return _isBatchProgessOver(batch.depositsCount, batch.blockNumber) || batch.depositsCount >= batchSize;
+    }
+
+    function _deductServiceFee(address tokenAddress, uint256 amount) private returns(uint256) {
+        uint256 decimals = ERC20(tokenAddress).decimals();
+        uint256 fullMaxServiceFee = maxServiceFee * 10**decimals;
+
+        uint256 serviceFee = (amount * serviceFeePercentage) / fullPercent;
+        if(serviceFee > fullMaxServiceFee) {
+            serviceFee = fullMaxServiceFee;
+        }
+
+        // store service fee to be claimed by admin
+        serviceFees += serviceFee;
+
+        return amount - serviceFee;
     }
 }

@@ -15,6 +15,16 @@ pub trait EsdtWEsdtSwap:
         self.wrapped_esdt_token_id().set(&wrapped_esdt_token_id);
         self.esdt_token_id().set(&esdt_token_id);
     }
+    
+    // should only be used in case of emergency.
+    #[only_owner]
+    #[endpoint(recoverEsdt)]
+    fn recover_esdt(&self) {
+        let owner = self.blockchain().get_owner_address();
+        let esdt_token_id = self.esdt_token_id().get();
+        self.send()
+            .direct_esdt(&owner, &esdt_token_id, 0, &self.get_locked_esdt_balance(), &[]);
+    }
 
     // endpoints
 

@@ -1,5 +1,4 @@
 import { task, types } from "hardhat/config";
-import { ethers } from "ethers";
 import { getDeployOptions } from "../args/deployOptions";
 
 task("deploy-safe", "Deploys ERC20Safe")
@@ -20,4 +19,7 @@ task("deploy-safe", "Deploys ERC20Safe")
     config.erc20Safe = safeContract.address;
 
     fs.writeFileSync(filename, JSON.stringify(config));
+
+    const tx = await safeContract.setServiceFeeReceiver(adminWallet.address);
+    await tx.wait();
   });

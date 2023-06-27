@@ -198,7 +198,7 @@ func emptyResponse(response [][]byte) bool {
 }
 
 func (c *client) createPendingBatchFromResponse(ctx context.Context, responseData [][]byte) (*clients.TransferBatch, error) {
-	numFieldsForTransaction := 6
+	numFieldsForTransaction := 7
 	dataLen := len(responseData)
 	haveCorrectNumberOfArgs := (dataLen-1)%numFieldsForTransaction == 0 && dataLen > 1
 	if !haveCorrectNumberOfArgs {

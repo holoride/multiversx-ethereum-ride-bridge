@@ -40,8 +40,16 @@ case "$1" in
   deploy-bridge-contracts
   ;;
 
+'recover-base-token')
+  recover-base-token
+  ;;
+
 'create-safe-transaction')
   create-safe-transaction
+  ;;
+
+'create-safe-transaction-from-base')
+  create-safe-transaction-from-base
   ;;
 
 'add-relayer')

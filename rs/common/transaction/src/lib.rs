@@ -16,12 +16,13 @@ pub type TxNonce = u64;
 pub type BlockNonce = u64;
 pub type SenderAddressRaw<M> = ManagedBuffer<M>;
 pub type ReceiverAddressRaw<M> = ManagedBuffer<M>;
-pub type TxAsMultiValue<M> = MultiValue6<
+pub type TxAsMultiValue<M> = MultiValue7<
     BlockNonce,
     TxNonce,
     SenderAddressRaw<M>,
     ReceiverAddressRaw<M>,
     TokenIdentifier<M>,
+    BigUint<M>,
     BigUint<M>,
 >;
 pub type PaymentsVec<M> = ManagedVec<M, EsdtTokenPayment<M>>;
@@ -47,12 +48,13 @@ pub struct Transaction<M: ManagedTypeApi> {
     pub to: ManagedBuffer<M>,
     pub token_identifier: TokenIdentifier<M>,
     pub amount: BigUint<M>,
+    pub service_fee: BigUint<M>,
     pub is_refund_tx: bool,
 }
 
 impl<M: ManagedTypeApi> From<TxAsMultiValue<M>> for Transaction<M> {
     fn from(tx_as_multiresult: TxAsMultiValue<M>) -> Self {
-        let (block_nonce, nonce, from, to, token_identifier, amount) =
+        let (block_nonce, nonce, from, to, token_identifier, amount, service_fee) =
             tx_as_multiresult.into_tuple();
 
         Transaction {
@@ -62,6 +64,7 @@ impl<M: ManagedTypeApi> From<TxAsMultiValue<M>> for Transaction<M> {
             to,
             token_identifier,
             amount,
+            service_fee,
             is_refund_tx: false,
         }
     }
@@ -76,6 +79,7 @@ impl<M: ManagedTypeApi> Transaction<M> {
             self.to,
             self.token_identifier,
             self.amount,
+            self.service_fee,
         )
             .into()
     }

@@ -10,6 +10,7 @@ elrond_wasm_node::wasm_endpoints! {
         addRefundBatch
         addTokenToWhitelist
         calculateRequiredFee
+        calculateServiceFee
         claimRefund
         createTransaction
         distributeFees
@@ -25,7 +26,10 @@ elrond_wasm_node::wasm_endpoints! {
         getFirstBatchId
         getLastBatchId
         getMaxBridgedAmount
+        getMaxServiceFee
         getRefundAmounts
+        getServiceFeeContractAddress
+        getServiceFeePercentage
         isPaused
         pause
         removeTokenFromWhitelist
@@ -33,8 +37,11 @@ elrond_wasm_node::wasm_endpoints! {
         setEthTxGasLimit
         setFeeEstimatorContractAddress
         setMaxBridgedAmount
+        setMaxServiceFee
         setMaxTxBatchBlockDuration
         setMaxTxBatchSize
+        setServiceFeeContractAddress
+        setServiceFeePercentage
         setTokenTicker
         setTransactionBatchStatus
         unpause
