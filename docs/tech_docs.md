@@ -256,7 +256,7 @@
     - command `./script.sh remove-relayer`
     - paste in relayer address
 
-#### set Service Fee Receiver on Ethereum side
+#### Set Service Fee Receiver on Ethereum side
 
 - `RECEIVER_ADDR={receiver address} && yarn hardhat --network sepolia set-service-fee-receiver --receiver $RECEIVER_ADDR`
 
