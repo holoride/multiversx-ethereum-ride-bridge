@@ -94,6 +94,14 @@ case "$1" in
   change-quorum
   ;;
 
+'add-gas-updater')
+  add-gas-updater
+  ;;
+
+'remove-gas-updater')
+  remove-gas-updater
+  ;;
+
 'pause-contracts')
   pause-contracts
   ;;

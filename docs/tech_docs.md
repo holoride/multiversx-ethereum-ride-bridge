@@ -122,6 +122,8 @@
 
          - deploys aggregator contract (used to get eth fees)
 
+         - deploys with gas updater address specified as `GAS_UPDATER_ADDRESS` in config. change this as needed.
+
    - Deploy bridge tokens wrapper
 
        - `./script.sh deploy-wrapper`
@@ -259,5 +261,26 @@
 #### Set Service Fee Receiver on Ethereum side
 
 - `RECEIVER_ADDR={receiver address} && yarn hardhat --network sepolia set-service-fee-receiver --receiver $RECEIVER_ADDR`
+
+#### Update gas fee on Multiversx side
+
+- Update `GAS_UPDATER` with private key of address to update gas fee
+
+- Update `FEE_AMOUNT` with token amount to set as fee
+
+- command `./script.sh set-swap-fee`
+
+#### Add an address that can update the gas fee on Multiversx side
+
+- command `./script.sh add-gas-updater`
+
+- paste in gas updater address
+
+#### Remove an address that can update the gas fee on Multiversx side
+
+- command `./script.sh remove-gas-updater`
+
+- paste in gas updater address
+
 
 
