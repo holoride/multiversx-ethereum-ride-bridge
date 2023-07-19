@@ -25,7 +25,7 @@ deployBridgedTokensWrapper() {
 setLocalRolesBridgedTokensWrapper() {
     CHECK_VARIABLES ESDT_SYSTEM_SC_ADDRESS UNIVERSAL_TOKEN BRIDGED_TOKENS_WRAPPER
     
-    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ADMIN} \
+    mxpy --verbose contract call ${ESDT_SYSTEM_SC_ADDRESS} --recall-nonce --pem=${ALICE} \
     --gas-limit=60000000 --function="setSpecialRole" \
     --arguments str:${UNIVERSAL_TOKEN} ${BRIDGED_TOKENS_WRAPPER} str:ESDTRoleLocalMint str:ESDTRoleLocalBurn\
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}

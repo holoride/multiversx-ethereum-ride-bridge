@@ -159,7 +159,7 @@
 
    - Deploy WESDT<->ESDT swap contract
 
-       - command `./script.sh add-relayer`
+       - command `./script.sh deploy-wesdt-swap`
 
    - Unpause contracts
 
