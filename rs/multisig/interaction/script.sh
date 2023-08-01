@@ -21,6 +21,10 @@ case "$1" in
   upgrade-wrapper    
   ;;
 
+'deploy-deposit-wrapper')
+  deploy-deposit-wrapper    
+  ;;
+
 'deploy-wesdt-swap')
   deploy-wesdt-swap
   ;;
@@ -50,6 +54,10 @@ case "$1" in
 
 'create-safe-transaction-from-base')
   create-safe-transaction-from-base
+  ;;
+
+'deposit-bridge')
+  deposit-bridge
   ;;
 
 'add-relayer')

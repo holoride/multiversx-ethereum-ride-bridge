@@ -12,4 +12,6 @@ members = [
   "wesdt-swap/meta",
   "price-aggregator",
   "price-aggregator/meta",
+  "deposit-wrapper",
+  "deposit-wrapper/meta",
 ]

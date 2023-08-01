@@ -1,0 +1,217 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.71.0-nightly",
+            "commitHash": "dbba594575ce75b1b57ccb1e4223b9909a28b1b8",
+            "commitDate": "2023-05-01",
+            "channel": "Nightly",
+            "short": "rustc 1.71.0-nightly (dbba59457 2023-05-01)"
+        },
+        "contractCrate": {
+            "name": "deposit-wrapper",
+            "version": "0.0.0",
+            "git_version": "39a3149-modified"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.32.0"
+        }
+    },
+    "name": "DepositWrapper",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "bridged_tokens_wrapper_sc_address",
+                "type": "Address"
+            },
+            {
+                "name": "esdt_safe_sc_address",
+                "type": "Address"
+            },
+            {
+                "name": "wesdt_swap_sc_address",
+                "type": "Address"
+            },
+            {
+                "name": "esdt_token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "wrapped_esdt_token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "eth_esdt_token_id",
+                "type": "TokenIdentifier"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "deposit",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [
+                {
+                    "name": "to",
+                    "type": "EthAddress"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getBridgedTokensWrapperAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getEsdtSafeAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getWesdtSwapAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "getWrappedEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "getEthEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "getEsdtBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getWrappedEsdtBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getWrappedEsdtBalanceCaller",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "getEthEsdtBalance",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "BigUint"
+                }
+            ]
+        },
+        {
+            "name": "isPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "pause",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "unpause",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        }
+    ],
+    "events": [
+        {
+            "identifier": "balanceEvent",
+            "inputs": [
+                {
+                    "name": "balance",
+                    "type": "BigUint",
+                    "indexed": true
+                }
+            ]
+        }
+    ],
+    "hasCallback": false,
+    "types": {
+        "EthAddress": {
+            "type": "struct",
+            "docs": [
+                "Wrapper over a 20-byte array"
+            ],
+            "fields": [
+                {
+                    "name": "raw_addr",
+                    "type": "array20<u8>"
+                }
+            ]
+        }
+    }
+}
