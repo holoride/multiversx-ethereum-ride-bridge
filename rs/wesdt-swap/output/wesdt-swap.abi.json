@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "wesdt-swap",
             "version": "0.0.0",
-            "git_version": "39a3149-modified"
+            "git_version": "20dfe86-modified"
         },
         "framework": {
             "name": "elrond-wasm",

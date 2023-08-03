@@ -25,8 +25,16 @@ case "$1" in
   deploy-deposit-wrapper    
   ;;
 
+'upgrade-deposit-wrapper')
+  upgrade-deposit-wrapper    
+  ;;
+
 'deploy-wesdt-swap')
   deploy-wesdt-swap
+  ;;
+
+'upgrade-wesdt-swap')
+  upgrade-wesdt-swap
   ;;
 
 'relayer-stake')
@@ -42,6 +50,14 @@ case "$1" in
   echo "PREREQUIREMENTS: AGGREGATOR & BRIDGED_TOKENS_WRAPPER deployed"
   echo -e 
   deploy-bridge-contracts
+  ;;
+
+'upgrade-safe')
+  upgrade-safe
+  ;;
+
+'unpause-safe')
+  unpause-safe
   ;;
 
 'recover-base-token')
@@ -116,6 +132,10 @@ case "$1" in
 
 'unpause-contracts')
   unpause-contracts
+  ;;
+
+'unpause-wrapper')
+  unpause-wrapper
   ;;
 
 'set-swap-fee')

@@ -184,7 +184,7 @@ pub trait EsdtSafe:
     /// fee_amount = price_per_gas_unit * eth_tx_gas_limit
     #[payable("*")]
     #[endpoint(createTransaction)]
-    fn create_transaction(&self, to: EthAddress<Self::Api>) {
+    fn create_transaction(&self, from: ManagedAddress, to: EthAddress<Self::Api>) {
         require!(self.not_paused(), "Cannot create transaction while paused");
 
         let (payment_token, payment_amount) = self.call_value().single_fungible_esdt();
@@ -206,12 +206,11 @@ pub trait EsdtSafe:
         let service_fee = self.calculate_service_fee(&amount_including_gas_fee);
         let actual_bridged_amount = amount_including_gas_fee - &service_fee;
 
-        let caller = self.blockchain().get_caller();
         let tx_nonce = self.get_and_save_next_tx_id();
         let tx = Transaction {
             block_nonce: self.blockchain().get_block_nonce(),
             nonce: tx_nonce,
-            from: caller.as_managed_buffer().clone(),
+            from: from.as_managed_buffer().clone(),
             to: to.as_managed_buffer().clone(),
             token_identifier: payment_token,
             amount: actual_bridged_amount,

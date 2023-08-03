@@ -161,3 +161,15 @@ multiTransferEsdtSetMaxBridgedAmountForToken() {
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${MAX} \
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
+
+upgradeSafe() {
+    CHECK_VARIABLES MULTISIG SAFE SAFE_SOURCE AGGREGATOR ALICE_ADDRESS ETH_TX_GAS_LIMIT SERVICE_FEE_PERCENTAGE \
+    MAX_SERVICE_FEE NR_DECIMALS_UNIVERSAL
+
+    MAX_SERVICE_FEE_WITH_DECIMALS=$(echo "$MAX_SERVICE_FEE*10^$NR_DECIMALS_UNIVERSAL" | bc)
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=400000000 --function="upgradeChildContractFromSource" \
+    --arguments ${SAFE} ${SAFE_SOURCE} 0x01 ${AGGREGATOR} ${ALICE_ADDRESS} ${ETH_TX_GAS_LIMIT} ${SERVICE_FEE_PERCENTAGE} ${MAX_SERVICE_FEE_WITH_DECIMALS} \
+    --send --wait-result --outfile="upgradesafe-child-sc-spam.json" --proxy=${PROXY} --chain=${CHAIN_ID}
+}

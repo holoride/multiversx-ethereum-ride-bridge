@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "deposit-wrapper",
             "version": "0.0.0",
-            "git_version": "39a3149-modified"
+            "git_version": "20dfe86-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -34,10 +34,6 @@
             },
             {
                 "name": "esdt_token_id",
-                "type": "TokenIdentifier"
-            },
-            {
-                "name": "wrapped_esdt_token_id",
                 "type": "TokenIdentifier"
             },
             {
@@ -103,62 +99,12 @@
             ]
         },
         {
-            "name": "getWrappedEsdtTokenId",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "TokenIdentifier"
-                }
-            ]
-        },
-        {
             "name": "getEthEsdtTokenId",
             "mutability": "readonly",
             "inputs": [],
             "outputs": [
                 {
                     "type": "TokenIdentifier"
-                }
-            ]
-        },
-        {
-            "name": "getEsdtBalance",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "BigUint"
-                }
-            ]
-        },
-        {
-            "name": "getWrappedEsdtBalance",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "BigUint"
-                }
-            ]
-        },
-        {
-            "name": "getWrappedEsdtBalanceCaller",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "BigUint"
-                }
-            ]
-        },
-        {
-            "name": "getEthEsdtBalance",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "BigUint"
                 }
             ]
         },
@@ -187,18 +133,7 @@
             "outputs": []
         }
     ],
-    "events": [
-        {
-            "identifier": "balanceEvent",
-            "inputs": [
-                {
-                    "name": "balance",
-                    "type": "BigUint",
-                    "indexed": true
-                }
-            ]
-        }
-    ],
+    "events": [],
     "hasCallback": false,
     "types": {
         "EthAddress": {

@@ -9,15 +9,10 @@ elrond_wasm_node::wasm_endpoints! {
     (
         deposit
         getBridgedTokensWrapperAddress
-        getEsdtBalance
         getEsdtSafeAddress
         getEsdtTokenId
-        getEthEsdtBalance
         getEthEsdtTokenId
         getWesdtSwapAddress
-        getWrappedEsdtBalance
-        getWrappedEsdtBalanceCaller
-        getWrappedEsdtTokenId
         isPaused
         pause
         unpause

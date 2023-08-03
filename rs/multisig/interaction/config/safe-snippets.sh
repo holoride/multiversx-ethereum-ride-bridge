@@ -7,6 +7,7 @@ deploySafe() {
     mxpy --verbose contract deploy --bytecode=${SAFE_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=150000000 \
     --arguments ${AGGREGATOR} ${ALICE_ADDRESS} ${ETH_TX_GAS_LIMIT} ${SERVICE_FEE_PERCENTAGE} ${MAX_SERVICE_FEE_WITH_DECIMALS}  \
+    --metadata-payable \
     --send --wait-result --outfile="deploy-safe-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="./deploy-safe-testnet.interaction.json" --expression="data['emittedTransactionHash']")
@@ -17,7 +18,7 @@ deploySafe() {
 
     echo ""
     echo "Safe contract address: ${ADDRESS}"
-}   
+}
 
 setLocalRolesEsdtSafe() {
     CHECK_VARIABLES ESDT_SYSTEM_SC_ADDRESS CHAIN_SPECIFIC_TOKEN SAFE

@@ -10,6 +10,25 @@ deployBridgedTokensWrapper() {
     
     mxpy --verbose contract deploy --bytecode=${BRIDGED_TOKENS_WRAPPER_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=90000000 \
+    --metadata-payable \
+    --send --wait-result --outfile="deploy-bridged-tokens-wrapper-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+
+    TRANSACTION=$(mxpy data parse --file="./deploy-bridged-tokens-wrapper-testnet.interaction.json" --expression="data['emittedTransactionHash']")
+    ADDRESS=$(mxpy data parse --file="./deploy-bridged-tokens-wrapper-testnet.interaction.json" --expression="data['contractAddress']")
+
+    mxpy data store --key=address-testnet-bridged-tokens-wrapper --value=${ADDRESS}
+    mxpy data store --key=deployTransaction-testnet --value=${TRANSACTION}
+
+    echo ""
+    echo "Bridged tokens wrapper SC: ${ADDRESS}"
+}
+
+upgradeBridgedTokensWrapper() {
+    CHECK_VARIABLES BRIDGED_TOKENS_WRAPPER_WASM BRIDGED_TOKENS_WRAPPER
+    
+    mxpy --verbose contract upgrade ${BRIDGED_TOKENS_WRAPPER} --bytecode=${BRIDGED_TOKENS_WRAPPER_WASM} --recall-nonce --pem=${ALICE} \
+    --gas-limit=90000000 \
+    --metadata-payable \
     --send --wait-result --outfile="deploy-bridged-tokens-wrapper-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="./deploy-bridged-tokens-wrapper-testnet.interaction.json" --expression="data['emittedTransactionHash']")
@@ -109,12 +128,4 @@ wrapper-pause() {
     mxpy --verbose contract call ${BRIDGED_TOKENS_WRAPPER} --recall-nonce --pem=${ALICE} \
     --gas-limit=5000000 --function="pause" \
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID} || return
-}
-
-wrapper-upgrade() {
-    CHECK_VARIABLES BRIDGED_TOKENS_WRAPPER BRIDGED_TOKENS_WRAPPER_WASM
-
-    mxpy --verbose contract upgrade ${BRIDGED_TOKENS_WRAPPER} --bytecode=${BRIDGED_TOKENS_WRAPPER_WASM} --recall-nonce --pem=${ALICE} \
-    --gas-limit=50000000 --send --wait-result \
-    --outfile="upgrade-bridged-tokens-wrapper.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return 
 }

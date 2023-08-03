@@ -4,6 +4,7 @@ deployWesdtSwap() {
     mxpy --verbose contract deploy --bytecode=${WESDT_SWAP_WASM} --recall-nonce --pem=${ALICE} \
     --gas-limit=100000000 \
     --arguments str:${UNIVERSAL_TOKEN} str:${BASE_TOKEN} \
+    --metadata-payable \
     --send --wait-result --outfile="deploy-wesdt-swap-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
 
     TRANSACTION=$(mxpy data parse --file="deploy-wesdt-swap-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
@@ -19,9 +20,20 @@ deployWesdtSwap() {
 upgradeWesdtSwap() {
     CHECK_VARIABLES UNIVERSAL_TOKEN
 
-    mxpy --verbose contract upgrade ${ADDRESS} --bytecode=${WESDT_SWAP_WASM} --recall-nonce --pem=${ALICE} \
-    --arguments ${UNIVERSAL_TOKEN} --gas-limit=100000000 --outfile="upgrade.json" \
-    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID} || return
+    mxpy --verbose contract upgrade ${WESDT_SWAP} --bytecode=${WESDT_SWAP_WASM} --recall-nonce --pem=${ALICE} \
+    --gas-limit=100000000 \
+    --arguments str:${UNIVERSAL_TOKEN} str:${BASE_TOKEN} \
+    --metadata-payable \
+    --send --wait-result --outfile="deploy-wesdt-swap-testnet.interaction.json" --proxy=${PROXY} --chain=${CHAIN_ID} || return
+
+    TRANSACTION=$(mxpy data parse --file="deploy-wesdt-swap-testnet.interaction.json" --expression="data['emitted_tx']['hash']")
+    ADDRESS=$(mxpy data parse --file="./deploy-wesdt-swap-testnet.interaction.json" --expression="data['contractAddress']")
+
+    mxpy data store --key=address-testnet --value=${ADDRESS}
+    mxpy data store --key=deployTransaction-testnet-wesdt-esdt-swap --value=${TRANSACTION}
+
+    echo ""
+    echo "Smart contract address: ${ADDRESS}"
 }
 
 setLocalRolesWesdtSwap() {

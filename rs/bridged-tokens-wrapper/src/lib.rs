@@ -183,7 +183,7 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
 
     #[payable("*")]
     #[endpoint(unwrapToken)]
-    fn unwrap_token(&self, requested_token: TokenIdentifier) {
+    fn unwrap_token(&self, requested_token: TokenIdentifier) -> EsdtTokenPayment<Self::Api> {
         require!(self.not_paused(), "Contract is paused");
         let (payment_token, payment_amount) = self.call_value().single_fungible_esdt();
         require!(payment_amount > 0u32, "Must pay more than 0 tokens!");
@@ -219,6 +219,8 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
         let caller = self.blockchain().get_caller();
         self.send()
             .direct_esdt(&caller, chain_specific_token_id, 0, &converted_amount, &[]);
+
+        EsdtTokenPayment::new(chain_specific_token_id.clone(), 0, converted_amount)
     }
 
     fn get_converted_amount(
