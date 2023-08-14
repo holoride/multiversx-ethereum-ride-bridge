@@ -10,6 +10,7 @@ task("deposit", "Deposits token and sends to safe")
     const filename = "setup.config.json";
     let config = JSON.parse(fs.readFileSync(filename, "utf8"));
     const [adminWallet] = await hre.ethers.getSigners();
+    console.log(adminWallet.address);
     const safeAddress = config["erc20Safe"];
     const safeContractFactory = await hre.ethers.getContractFactory("ERC20Safe");
     const safe = safeContractFactory.attach(safeAddress).connect(adminWallet);
@@ -19,5 +20,7 @@ task("deposit", "Deposits token and sends to safe")
     const receiver = taskArgs.receiver;
     console.log("receiver: ", receiver);
 
-    await safe.deposit(address, amount, Buffer.from(receiver, "hex"), getDeployOptions(taskArgs));
+    const tx = await safe.deposit(address, amount, Buffer.from(receiver, "hex"), getDeployOptions(taskArgs));
+
+    console.log("Transaction hash: ", tx.hash);
   });

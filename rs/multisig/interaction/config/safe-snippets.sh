@@ -47,3 +47,13 @@ createTransaction() { # Transfer chain specific token to eth
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
+
+calculateRequiredFee() {
+    CHECK_VARIABLES SAFE CHAIN_SPECIFIC_TOKEN_TICKER
+
+    mxpy --verbose contract call ${SAFE} --recall-nonce --pem=${ALICE} \
+    --gas-limit=50000000 --function "calculateRequiredFee" \
+    --arguments str:${CHAIN_SPECIFIC_TOKEN_TICKER} \
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+

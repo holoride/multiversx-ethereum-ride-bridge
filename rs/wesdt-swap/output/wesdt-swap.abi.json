@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "wesdt-swap",
             "version": "0.0.0",
-            "git_version": "20dfe86-modified"
+            "git_version": "f697855-modified"
         },
         "framework": {
             "name": "elrond-wasm",
@@ -59,6 +59,20 @@
                 "*"
             ],
             "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "unwrapEsdtToAddress",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [
+                {
+                    "name": "to",
+                    "type": "Address"
+                }
+            ],
             "outputs": []
         },
         {

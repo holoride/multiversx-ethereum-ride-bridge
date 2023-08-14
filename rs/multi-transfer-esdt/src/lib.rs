@@ -12,13 +12,14 @@ pub trait MultiTransferEsdt:
     tx_batch_module::TxBatchModule + max_bridged_amount_module::MaxBridgedAmountModule
 {
     #[init]
-    fn init(&self, opt_wrapping_contract_address: OptionalValue<ManagedAddress>) {
+    fn init(&self, opt_wrapping_contract_address: OptionalValue<ManagedAddress>, opt_swapping_contract_address: OptionalValue<ManagedAddress>) {
         self.max_tx_batch_size()
             .set_if_empty(&DEFAULT_MAX_TX_BATCH_SIZE);
         self.max_tx_batch_block_duration()
             .set_if_empty(&DEFAULT_MAX_TX_BATCH_BLOCK_DURATION);
 
         self.set_wrapping_contract_address(opt_wrapping_contract_address);
+        self.set_swapping_contract_address(opt_swapping_contract_address);
 
         // batch ID 0 is considered invalid
         self.first_batch_id().set_if_empty(&1);
@@ -108,6 +109,22 @@ pub trait MultiTransferEsdt:
         }
     }
 
+    #[only_owner]
+    #[endpoint(setSwappingContractAddress)]
+    fn set_swapping_contract_address(&self, opt_new_address: OptionalValue<ManagedAddress>) {
+        match opt_new_address {
+            OptionalValue::Some(sc_addr) => {
+                require!(
+                    self.blockchain().is_smart_contract(&sc_addr),
+                    "Invalid swapping contract address"
+                );
+
+                self.swapping_contract_address().set(&sc_addr);
+            }
+            OptionalValue::None => self.swapping_contract_address().clear(),
+        }
+    }
+
     // private
 
     fn convert_to_refund_tx(&self, eth_tx: EthTransaction<Self::Api>) -> Transaction<Self::Api> {
@@ -162,10 +179,13 @@ pub trait MultiTransferEsdt:
         dest_addresses: ManagedVec<ManagedAddress>,
         payments: PaymentsVec<Self::Api>,
     ) {
+
         for (dest, p) in dest_addresses.iter().zip(payments.iter()) {
-            self.send()
-                .direct_esdt(&dest, &p.token_identifier, 0, &p.amount, &[]);
-        }
+            self.get_swapping_contract_proxy_instance()
+                .unwrap_esdt_to_address(&*dest)
+                .add_esdt_token_transfer(p.token_identifier, 0, p.amount)
+                .transfer_execute();
+            }
     }
 
     // proxies
@@ -180,11 +200,26 @@ pub trait MultiTransferEsdt:
         self.wrapping_contract_proxy(self.wrapping_contract_address().get())
     }
 
+
+    #[proxy]
+    fn swapping_contract_proxy(
+        &self,
+        sc_address: ManagedAddress,
+    ) -> wesdt_swap::Proxy<Self::Api>;
+
+    fn get_swapping_contract_proxy_instance(&self) -> wesdt_swap::Proxy<Self::Api> {
+        self.swapping_contract_proxy(self.swapping_contract_address().get())
+    }
+
     // storage
 
     #[view(getWrappingContractAddress)]
     #[storage_mapper("wrappingContractAddress")]
     fn wrapping_contract_address(&self) -> SingleValueMapper<ManagedAddress>;
+
+    #[view(getSwappingContractAddress)]
+    #[storage_mapper("swappingContractAddress")]
+    fn swapping_contract_address(&self) -> SingleValueMapper<ManagedAddress>;
 
     // events
 

@@ -75,6 +75,31 @@ pub trait EsdtWEsdtSwap:
             .direct_esdt(&caller, &esdt_token_id, 0, &payment_amount, &[]);
     }
 
+
+    #[payable("*")]
+    #[endpoint(unwrapEsdtToAddress)]
+    fn unwrap_esdt_to_address(&self, to: ManagedAddress) {
+        self.not_paused();
+
+        let (payment_token, payment_amount) = self.call_value().single_fungible_esdt();
+        let wrapped_esdt_token_id = self.wrapped_esdt_token_id().get();
+
+        require!(payment_token == wrapped_esdt_token_id, "Wrong esdt token");
+        require!(payment_amount > 0u32, "Must pay more than 0 tokens!");
+        require!(
+            payment_amount <= self.get_locked_esdt_balance(),
+            "Contract does not have enough funds"
+        );
+
+        self.send()
+            .esdt_local_burn(&wrapped_esdt_token_id, 0, &payment_amount);
+
+        // 1 wrapped ESDT = 1 ESDT, so we pay back the same amount
+        let esdt_token_id = self.esdt_token_id().get();
+        self.send()
+            .direct_esdt(&to, &esdt_token_id, 0, &payment_amount, &[]);
+    }
+
     #[view(getLockedEsdtBalance)]
     fn get_locked_esdt_balance(&self) -> BigUint {
         let token = self.esdt_token_id().get();

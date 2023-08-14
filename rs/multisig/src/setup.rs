@@ -160,6 +160,14 @@ pub trait SetupModule:
             .execute_on_dest_context_ignore_result();
     }
 
+    #[only_owner]
+    #[endpoint(changeServiceFeeContractAddress)]
+    fn change_service_fee_contract_address(&self, new_address: ManagedAddress) {
+        self.get_esdt_safe_proxy_instance()
+            .set_service_fee_contract_address(new_address)
+            .execute_on_dest_context_ignore_result();
+    }
+
     /// Sets the gas limit being used for Ethereum transactions
     /// This is used in the EsdtSafe contract to determine the fee amount
     ///
@@ -224,7 +232,7 @@ pub trait SetupModule:
             .set_max_tx_batch_size(new_max_tx_batch_size)
             .execute_on_dest_context_ignore_result();
     }
-
+   
     /// Sets the maximum block duration in which an EsdtSafe batch accepts transactions
     /// For a batch to be considered "full", it has to either reach `maxTxBatchSize` transactions,
     /// or have txBatchBlockDuration blocks pass since the first tx was added in the batch
@@ -260,6 +268,28 @@ pub trait SetupModule:
     ) {
         self.get_multi_transfer_esdt_proxy_instance()
             .set_max_bridged_amount(token_id, max_amount)
+            .execute_on_dest_context_ignore_result();
+    }
+
+    #[only_owner]
+    #[endpoint(esdtSafeSetServiceFeePercentage)]
+    fn esdt_safe_set_service_fee_percentage(
+        &self,
+        new_limit: BigUint,
+    ) {
+        self.get_esdt_safe_proxy_instance()
+            .set_service_fee_percentage(new_limit)
+            .execute_on_dest_context_ignore_result();
+    }
+
+    #[only_owner]
+    #[endpoint(esdtSafeSetMaxServiceFee)]
+    fn esdt_safe_set_max_service_fee(
+        &self,
+        new_limit: BigUint,
+    ) {
+        self.get_esdt_safe_proxy_instance()
+            .set_max_service_fee(new_limit)
             .execute_on_dest_context_ignore_result();
     }
 

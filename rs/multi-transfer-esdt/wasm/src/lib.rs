@@ -16,10 +16,12 @@ elrond_wasm_node::wasm_endpoints! {
         getFirstBatchId
         getLastBatchId
         getMaxBridgedAmount
+        getSwappingContractAddress
         getWrappingContractAddress
         setMaxBridgedAmount
         setMaxTxBatchBlockDuration
         setMaxTxBatchSize
+        setSwappingContractAddress
         setWrappingContractAddress
     )
 }

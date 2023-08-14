@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "deposit-wrapper",
             "version": "0.0.0",
-            "git_version": "20dfe86-modified"
+            "git_version": "f697855-modified"
         },
         "framework": {
             "name": "elrond-wasm",

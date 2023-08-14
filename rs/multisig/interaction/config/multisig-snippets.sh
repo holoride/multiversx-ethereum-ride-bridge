@@ -152,6 +152,27 @@ esdtSafeSetMaxBridgedAmountForToken() {
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
+
+esdtSafeSetServiceFeePercentage() {
+    CHECK_VARIABLES SERVICE_FEE_PERCENTAGE
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=40000000 --function="esdtSafeSetServiceFeePercentage" \
+    --arguments ${SERVICE_FEE_PERCENTAGE} \
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+esdtSafeSetMaxServiceFee() {
+    CHECK_VARIABLES MAX_SERVICE_FEE
+
+    MAX_SERVICE_FEE_WITH_DECIMALS=$(echo "$MAX_SERVICE_FEE*10^$NR_DECIMALS_UNIVERSAL" | bc)
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=40000000 --function="esdtSafeSetMaxServiceFee" \
+    --arguments ${MAX_SERVICE_FEE_WITH_DECIMALS} \
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
 multiTransferEsdtSetMaxBridgedAmountForToken() {
     CHECK_VARIABLES MAX_AMOUNT NR_DECIMALS_CHAIN_SPECIFIC CHAIN_SPECIFIC_TOKEN MULTISIG
 
@@ -159,6 +180,25 @@ multiTransferEsdtSetMaxBridgedAmountForToken() {
     mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
     --gas-limit=40000000 --function="multiTransferEsdtSetMaxBridgedAmountForToken" \
     --arguments str:${CHAIN_SPECIFIC_TOKEN} ${MAX} \
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+multiTransferEsdtSetMaxRefundTxBatchSize() {
+    CHECK_VARIABLES MAX_REFUND_TX_PER_BATCH MULTISIG
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=30000000 --function="multiTransferEsdtSetMaxRefundTxBatchSize" \
+    --arguments ${MAX_REFUND_TX_PER_BATCH} \
+    --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+
+multiTransferEsdtSetMaxRefundTxBatchBlockDuration() {
+    CHECK_VARIABLES MAX_TX_BLOCK_DURATION_PER_BATCH MULTISIG
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=30000000 --function="multiTransferEsdtSetMaxRefundTxBatchBlockDuration" \
+    --arguments ${MAX_TX_BLOCK_DURATION_PER_BATCH} \
     --send --wait-result --proxy=${PROXY} --chain=${CHAIN_ID}
 }
 
@@ -172,4 +212,21 @@ upgradeSafe() {
     --gas-limit=400000000 --function="upgradeChildContractFromSource" \
     --arguments ${SAFE} ${SAFE_SOURCE} 0x01 ${AGGREGATOR} ${ALICE_ADDRESS} ${ETH_TX_GAS_LIMIT} ${SERVICE_FEE_PERCENTAGE} ${MAX_SERVICE_FEE_WITH_DECIMALS} \
     --send --wait-result --outfile="upgradesafe-child-sc-spam.json" --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+distributeFeesFromChildContracts(){
+    CHECK_VARIABLES MULTISIG ALICE ALICE_ADDRESS PERCENTAGE_TOTAL
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=400000000 --function="distributeFeesFromChildContracts" \
+    --arguments ${ALICE_ADDRESS} ${PERCENTAGE_TOTAL} \
+    --send --wait-result --outfile="distributeFeesFromChildContracts-sc-spam.json" --proxy=${PROXY} --chain=${CHAIN_ID}
+}
+
+moveRefundBatchToSafe(){
+    CHECK_VARIABLES MULTISIG ALICE 
+
+    mxpy --verbose contract call ${MULTISIG} --recall-nonce --pem=${ALICE} \
+    --gas-limit=400000000 --function="moveRefundBatchToSafe" \
+    --send --wait-result --outfile="distributeFeesFromChildContracts-sc-spam.json" --proxy=${PROXY} --chain=${CHAIN_ID}
 }

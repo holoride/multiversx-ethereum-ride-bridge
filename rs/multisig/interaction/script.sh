@@ -68,6 +68,12 @@ case "$1" in
   create-safe-transaction
   ;;
 
+'calc-required-fee')
+  calc-required-fee
+  ;;
+
+
+
 'create-safe-transaction-from-base')
   create-safe-transaction-from-base
   ;;
@@ -87,6 +93,29 @@ case "$1" in
 'issue-base-token')
   issue-base-token
   ;;
+
+'set-max-bridge-amounts')
+  set-max-bridge-amounts
+  ;;
+
+'set-service-fee-percentage')
+  set-service-fee-percentage
+  ;;
+
+'set-max-service-fee')
+  set-max-service-fee
+  ;;
+
+
+'collect-dynamic-fee')
+  collect-dynamic-fee
+  ;;
+
+'move-refund-batch-to-safe')
+  move-refund-batch-to-safe
+  ;;
+
+
 
 'whitelist-token')
   echo -e 
@@ -110,8 +139,20 @@ case "$1" in
   set-safe-max-tx
   ;;
 
+'set-refund-max-tx')
+  set-refund-max-tx
+  ;;
+
 'set-safe-batch-block-duration')
   set-safe-batch-block-duration
+  ;;
+
+'set-refund-batch-block-duration')
+  set-refund-batch-block-duration
+  ;;
+
+'set-safe-batch-size')
+  set-safe-batch-size
   ;;
 
 'change-quorum')
@@ -138,7 +179,7 @@ case "$1" in
   unpause-wrapper
   ;;
 
-'set-swap-fee')
+'set-dynamic-fee')
   set-fee
   ;;
 

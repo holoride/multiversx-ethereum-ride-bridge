@@ -13,14 +13,17 @@ elrond_wasm_node::wasm_endpoints! {
         changeElrondToEthGasLimit
         changeFeeEstimatorContractAddress
         changeQuorum
+        changeServiceFeeContractAddress
         changeTokenTicker
         clearMapping
         distributeFeesFromChildContracts
         esdtSafeAddTokenToWhitelist
         esdtSafeRemoveTokenFromWhitelist
         esdtSafeSetMaxBridgedAmountForToken
+        esdtSafeSetMaxServiceFee
         esdtSafeSetMaxTxBatchBlockDuration
         esdtSafeSetMaxTxBatchSize
+        esdtSafeSetServiceFeePercentage
         getActionData
         getActionIdForSetCurrentTransactionBatchStatus
         getActionIdForTransferBatch
