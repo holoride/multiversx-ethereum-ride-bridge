@@ -27,7 +27,6 @@ contract Bridge is RelayerRole, Pausable {
     event QuorumChanged(uint256 quorum);
 
     /*========================= CONTRACT STATE =========================*/
-    string private constant action = "CurrentPendingBatch";
     string private constant executeTransferAction = "ExecuteBatchedTransfer";
     string private constant prefix = "\x19Ethereum Signed Message:\n32";
     uint256 private constant minimumQuorum = 1;

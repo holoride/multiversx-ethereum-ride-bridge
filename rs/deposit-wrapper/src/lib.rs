@@ -22,11 +22,11 @@ pub trait DepositWrapper:
             wesdt_swap_sc_address: ManagedAddress,
             esdt_token_id: TokenIdentifier,
             eth_esdt_token_id: TokenIdentifier) {
-        self.bridged_tokens_wrapper_address().set(&bridged_tokens_wrapper_sc_address);
-        self.esdt_safe_address().set(&esdt_safe_sc_address);
-        self.wesdt_swap_address().set(&wesdt_swap_sc_address);
-        self.esdt_token_id().set(&esdt_token_id);
-        self.eth_esdt_token_id().set(&eth_esdt_token_id);
+        self.bridged_tokens_wrapper_address().set_if_empty(&bridged_tokens_wrapper_sc_address);
+        self.esdt_safe_address().set_if_empty(&esdt_safe_sc_address);
+        self.wesdt_swap_address().set_if_empty(&wesdt_swap_sc_address);
+        self.esdt_token_id().set_if_empty(&esdt_token_id);
+        self.eth_esdt_token_id().set_if_empty(&eth_esdt_token_id);
     }
     
     #[payable("*")]

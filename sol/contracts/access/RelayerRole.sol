@@ -43,16 +43,8 @@ contract RelayerRole is AdminRole {
         return _relayers.contains(account);
     }
 
-    /**
-     * TODO: Either keep the functions for iteration (getRelayer and getRelayersCount) or getRelayers
-     *       Keeping both creates redundancy and increases gas costs
-     */
     function getRelayer(uint256 index) external view returns (address) {
         return _relayers.at(index);
-    }
-
-    function getRelayers() external view returns (address[] memory) {
-        return _relayers._values;
     }
 
     function getRelayersCount() external view returns (uint256) {
@@ -69,7 +61,7 @@ contract RelayerRole is AdminRole {
     }
 
     function _addRelayer(address account) private {
-        _validateAddress(account);
+        require(account != address(0), "RelayerRole: account cannot be the 0 address");
         require(_relayers.add(account), "RelayerRole: address is already a relayer");
         emit RelayerAdded(account, msg.sender);
     }
@@ -77,9 +69,5 @@ contract RelayerRole is AdminRole {
     function _removeRelayer(address account) private {
         require(_relayers.remove(account), "RelayerRole: address is not a relayer");
         emit RelayerRemoved(account, msg.sender);
-    }
-
-    function _validateAddress(address account) internal pure {
-        require(account != address(0), "RelayerRole: account cannot be the 0 address");
     }
 }

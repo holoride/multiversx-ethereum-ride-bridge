@@ -19,6 +19,7 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
     #[only_owner]
     #[endpoint(addWrappedToken)]
     fn add_wrapped_token(&self, universal_bridged_token_ids: TokenIdentifier, num_decimals: u32) {
+        require(!self.universal_bridged_token_ids().contains(&universal_bridged_token_ids), "Universal token was already added");
         self.require_mint_and_burn_roles(&universal_bridged_token_ids);
         self.token_decimals_num(&universal_bridged_token_ids)
             .set(num_decimals);
@@ -126,6 +127,7 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
 
     #[payable("*")]
     #[endpoint(depositLiquidity)]
+    #[only_owner]
     fn deposit_liquidity(&self) {
         let (payment_token, payment_amount) = self.call_value().single_fungible_esdt();
         self.token_liquidity(&payment_token)

@@ -24,7 +24,7 @@ path = "../bridged-tokens-wrapper"
 path = "../wesdt-swap"
 
 [dependencies.elrond-wasm]
-version = "0.32.0"
+version = "0.38.0"
 
 [dev-dependencies.elrond-wasm-debug]
-version = "0.32.0"
+version = "0.38.0"

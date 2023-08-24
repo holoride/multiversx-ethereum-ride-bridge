@@ -12,8 +12,8 @@ pub trait EsdtWEsdtSwap:
 {
     #[init]
     fn init(&self, wrapped_esdt_token_id: TokenIdentifier, esdt_token_id: TokenIdentifier) {
-        self.wrapped_esdt_token_id().set(&wrapped_esdt_token_id);
-        self.esdt_token_id().set(&esdt_token_id);
+        self.wrapped_esdt_token_id().set_if_empty(&wrapped_esdt_token_id);
+        self.esdt_token_id().set_if_empty(&esdt_token_id);
     }
     
     // should only be used in case of emergency.

@@ -20,14 +20,14 @@ pub trait PriceAggregator: elrond_wasm_modules::pause::PauseModule {
     ) {
         let is_deploy_call = !self.was_contract_deployed().get();
         if is_deploy_call {
-            self.decimals().set(decimals);
-            self.was_contract_deployed().set(true);
+            self.decimals().set_if_empty(decimals);
+            self.was_contract_deployed().set_if_empty(true);
         }
 
         self.add_oracles(oracles);
 
         self.require_valid_submission_count(submission_count);
-        self.submission_count().set(submission_count);
+        self.submission_count().set_if_empty(submission_count);
 
         self.set_paused(true);
     }

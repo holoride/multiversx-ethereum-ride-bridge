@@ -34,12 +34,12 @@ pub trait EsdtSafe:
             service_fee_percentage: BigUint,
             max_service_fee: BigUint) {
         self.fee_estimator_contract_address()
-            .set(&fee_estimator_contract_address);
+            .set_if_empty(&fee_estimator_contract_address);
         self.service_fee_contract_address()
-            .set(&service_fee_contract_address);
-        self.eth_tx_gas_limit().set(&eth_tx_gas_limit);
-        self.service_fee_percentage().set(&service_fee_percentage);
-        self.max_service_fee().set(&max_service_fee);
+            .set_if_empty(&service_fee_contract_address);
+        self.eth_tx_gas_limit().set_if_empty(&eth_tx_gas_limit);
+        self.service_fee_percentage().set_if_empty(&service_fee_percentage);
+        self.max_service_fee().set_if_empty(&max_service_fee);
 
         self.max_tx_batch_size()
             .set_if_empty(DEFAULT_MAX_TX_BATCH_SIZE);
@@ -53,7 +53,7 @@ pub trait EsdtSafe:
         // set ticker for "GWEI"
         let gwei_token_id = TokenIdentifier::from(GWEI_STRING);
         self.token_ticker(&gwei_token_id)
-            .set(gwei_token_id.as_managed_buffer());
+            .set_if_empty(gwei_token_id.as_managed_buffer());
 
         self.set_paused(true);
     }

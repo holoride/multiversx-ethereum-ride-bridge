@@ -53,7 +53,7 @@ pub trait Multisig:
                 if !new_user {
                     duplicates = true;
                 }
-                self.user_id_to_role(user_id).set(&UserRole::BoardMember);
+                self.user_id_to_role(user_id).set_if_empty(&UserRole::BoardMember);
             });
         require!(!duplicates, "duplicate board member");
 
@@ -65,14 +65,14 @@ pub trait Multisig:
             slash_amount <= required_stake,
             "slash amount must be less than or equal to required stake"
         );
-        self.required_stake_amount().set(&required_stake);
-        self.slash_amount().set(&slash_amount);
+        self.required_stake_amount().set_if_empty(&required_stake);
+        self.slash_amount().set_if_empty(&slash_amount);
 
         require!(
             self.blockchain().is_smart_contract(&esdt_safe_sc_address),
             "Esdt Safe address is not a Smart Contract address"
         );
-        self.esdt_safe_address().set(&esdt_safe_sc_address);
+        self.esdt_safe_address().set_if_empty(&esdt_safe_sc_address);
 
         require!(
             self.blockchain()
@@ -80,7 +80,7 @@ pub trait Multisig:
             "Multi Transfer address is not a Smart Contract address"
         );
         self.multi_transfer_esdt_address()
-            .set(&multi_transfer_sc_address);
+            .set_if_empty(&multi_transfer_sc_address);
 
         self.set_paused(true);
     }

@@ -28,7 +28,6 @@ pub trait SetupModule:
     ) {
         let mut metadata = CodeMetadata::UPGRADEABLE;
         if is_payable {
-            // TODO: Replace with PayableBySc when it's available
             metadata |= CodeMetadata::PAYABLE;
         }
 
