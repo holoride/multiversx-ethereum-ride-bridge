@@ -19,7 +19,8 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
     #[only_owner]
     #[endpoint(addWrappedToken)]
     fn add_wrapped_token(&self, universal_bridged_token_ids: TokenIdentifier, num_decimals: u32) {
-        require(!self.universal_bridged_token_ids().contains(&universal_bridged_token_ids), "Universal token was already added");
+        require!(!self.universal_bridged_token_ids()
+            .contains(&universal_bridged_token_ids), "Universal token was already added");
         self.require_mint_and_burn_roles(&universal_bridged_token_ids);
         self.token_decimals_num(&universal_bridged_token_ids)
             .set(num_decimals);
@@ -178,7 +179,7 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
         }
 
         let caller = self.blockchain().get_caller();
-        self.send().direct_multi(&caller, &new_payments, &[]);
+        self.send().direct_multi(&caller, &new_payments);
 
         new_payments
     }
@@ -220,7 +221,7 @@ pub trait BridgedTokensWrapper: elrond_wasm_modules::pause::PauseModule {
 
         let caller = self.blockchain().get_caller();
         self.send()
-            .direct_esdt(&caller, chain_specific_token_id, 0, &converted_amount, &[]);
+            .direct_esdt(&caller, chain_specific_token_id, 0, &converted_amount);
 
         EsdtTokenPayment::new(chain_specific_token_id.clone(), 0, converted_amount)
     }

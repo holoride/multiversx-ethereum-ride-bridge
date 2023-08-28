@@ -157,7 +157,7 @@ pub trait Multisig:
         }
 
         self.amount_staked(&caller).set(&remaining_stake);
-        self.send().direct_egld(&caller, &amount, &[]);
+        self.send().direct_egld(&caller, &amount);
     }
 
     // ESDT Safe SC calls

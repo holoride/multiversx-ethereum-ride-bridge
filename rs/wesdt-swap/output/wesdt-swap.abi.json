@@ -9,12 +9,11 @@
         },
         "contractCrate": {
             "name": "wesdt-swap",
-            "version": "0.0.0",
-            "git_version": "f697855-modified"
+            "version": "0.0.0"
         },
         "framework": {
             "name": "elrond-wasm",
-            "version": "0.32.0"
+            "version": "0.38.0"
         }
     },
     "name": "EsdtWEsdtSwap",
@@ -106,16 +105,6 @@
             ]
         },
         {
-            "name": "isPaused",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "bool"
-                }
-            ]
-        },
-        {
             "name": "pause",
             "onlyOwner": true,
             "mutability": "mutable",
@@ -128,6 +117,16 @@
             "mutability": "mutable",
             "inputs": [],
             "outputs": []
+        },
+        {
+            "name": "isPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
         }
     ],
     "events": [],
@@ -136,10 +135,6 @@
         "EsdtTokenPayment": {
             "type": "struct",
             "fields": [
-                {
-                    "name": "token_type",
-                    "type": "EsdtTokenType"
-                },
                 {
                     "name": "token_identifier",
                     "type": "TokenIdentifier"
@@ -151,31 +146,6 @@
                 {
                     "name": "amount",
                     "type": "BigUint"
-                }
-            ]
-        },
-        "EsdtTokenType": {
-            "type": "enum",
-            "variants": [
-                {
-                    "name": "Fungible",
-                    "discriminant": 0
-                },
-                {
-                    "name": "NonFungible",
-                    "discriminant": 1
-                },
-                {
-                    "name": "SemiFungible",
-                    "discriminant": 2
-                },
-                {
-                    "name": "Meta",
-                    "discriminant": 3
-                },
-                {
-                    "name": "Invalid",
-                    "discriminant": 4
                 }
             ]
         }

@@ -53,7 +53,7 @@ pub trait TokenModule: fee_estimator_module::FeeEstimatorModule {
                     remaining_fees -= &amount_to_send;
 
                     self.send()
-                        .direct_esdt(&pair.address, &token_id, 0, &amount_to_send, &[]);
+                        .direct_esdt(&pair.address, &token_id, 0, &amount_to_send);
                 }
             }
 

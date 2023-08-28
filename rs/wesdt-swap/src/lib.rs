@@ -23,7 +23,7 @@ pub trait EsdtWEsdtSwap:
         let owner = self.blockchain().get_owner_address();
         let esdt_token_id = self.esdt_token_id().get();
         self.send()
-            .direct_esdt(&owner, &esdt_token_id, 0, &self.get_locked_esdt_balance(), &[]);
+            .direct_esdt(&owner, &esdt_token_id, 0, &self.get_locked_esdt_balance());
     }
 
     // endpoints
@@ -45,7 +45,7 @@ pub trait EsdtWEsdtSwap:
 
         let caller = self.blockchain().get_caller();
         self.send()
-            .direct_esdt(&caller, &wrapped_esdt_token_id, 0, &payment_amount, &[]);
+            .direct_esdt(&caller, &wrapped_esdt_token_id, 0, &payment_amount);
 
         EsdtTokenPayment::new(wrapped_esdt_token_id, 0, payment_amount)
     }
@@ -72,7 +72,7 @@ pub trait EsdtWEsdtSwap:
         let esdt_token_id = self.esdt_token_id().get();
         let caller = self.blockchain().get_caller();
         self.send()
-            .direct_esdt(&caller, &esdt_token_id, 0, &payment_amount, &[]);
+            .direct_esdt(&caller, &esdt_token_id, 0, &payment_amount);
     }
 
 
@@ -97,7 +97,7 @@ pub trait EsdtWEsdtSwap:
         // 1 wrapped ESDT = 1 ESDT, so we pay back the same amount
         let esdt_token_id = self.esdt_token_id().get();
         self.send()
-            .direct_esdt(&to, &esdt_token_id, 0, &payment_amount, &[]);
+            .direct_esdt(&to, &esdt_token_id, 0, &payment_amount);
     }
 
     #[view(getLockedEsdtBalance)]

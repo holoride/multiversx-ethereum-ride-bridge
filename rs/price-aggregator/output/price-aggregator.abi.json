@@ -10,7 +10,7 @@
         "contractCrate": {
             "name": "price-aggregator",
             "version": "0.0.1",
-            "git_version": "f697855-modified"
+            "git_version": "1762fc8-modified"
         },
         "framework": {
             "name": "elrond-wasm",

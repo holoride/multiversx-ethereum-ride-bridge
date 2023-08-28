@@ -233,7 +233,7 @@ pub trait EsdtSafe:
 
         self.refund_amount(&caller, &token_id).clear();
         self.send()
-            .direct_esdt(&caller, &token_id, 0, &refund_amount, &[]);
+            .direct_esdt(&caller, &token_id, 0, &refund_amount);
 
         EsdtTokenPayment::new(token_id, 0, refund_amount)
     }
@@ -270,7 +270,7 @@ pub trait EsdtSafe:
     fn send_service_fee(&self, token_id: &TokenIdentifier, amount: &BigUint) {
         let service_fee_contract_address = self.service_fee_contract_address().get();
         self.send()
-            .direct_esdt(&service_fee_contract_address, token_id, 0, &amount, &[]);
+            .direct_esdt(&service_fee_contract_address, token_id, 0, &amount);
     }
 
     // events

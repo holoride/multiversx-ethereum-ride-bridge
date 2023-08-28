@@ -9,12 +9,11 @@
         },
         "contractCrate": {
             "name": "deposit-wrapper",
-            "version": "0.0.0",
-            "git_version": "f697855-modified"
+            "version": "0.0.0"
         },
         "framework": {
             "name": "elrond-wasm",
-            "version": "0.32.0"
+            "version": "0.38.0"
         }
     },
     "name": "DepositWrapper",
@@ -109,16 +108,6 @@
             ]
         },
         {
-            "name": "isPaused",
-            "mutability": "readonly",
-            "inputs": [],
-            "outputs": [
-                {
-                    "type": "bool"
-                }
-            ]
-        },
-        {
             "name": "pause",
             "onlyOwner": true,
             "mutability": "mutable",
@@ -131,6 +120,16 @@
             "mutability": "mutable",
             "inputs": [],
             "outputs": []
+        },
+        {
+            "name": "isPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
         }
     ],
     "events": [],
