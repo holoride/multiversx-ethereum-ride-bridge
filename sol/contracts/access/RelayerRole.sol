@@ -47,6 +47,10 @@ contract RelayerRole is AdminRole {
         return _relayers.at(index);
     }
 
+    function getRelayers() external view returns (address[] memory) {
+        return _relayers._values;
+    }
+
     function getRelayersCount() external view returns (uint256) {
         return _relayers.length();
     }
