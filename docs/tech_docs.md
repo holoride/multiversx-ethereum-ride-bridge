@@ -650,7 +650,7 @@ There are two types of fees in the system: the **dynamic fee** and the **service
    - install
        - `rustup install nightly`
        - `cargo +nightly build`
-       - `./build-wasm.sh`
+       - `./build-wasm-release.sh`
    - cd multisig/interaction
    - mkdir walletsRelay
    - move deployer key in walletsRelay as alice.pem
@@ -685,7 +685,7 @@ There are two types of fees in the system: the **dynamic fee** and the **service
        - paste in relayer address
 
    - Deploy WESDT<->ESDT swap contract
-       - command `./script.sh add-relayer`
+       - command `./script.sh deploy-wesdt-swap`
 
    - Unpause contracts
        - command `./script.sh unpause-contracts`
