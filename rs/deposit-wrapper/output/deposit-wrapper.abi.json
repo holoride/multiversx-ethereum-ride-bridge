@@ -1,0 +1,151 @@
+{
+    "buildInfo": {
+        "rustc": {
+            "version": "1.74.0-nightly",
+            "commitHash": "8550f15e148407159af401e02b1d9259762b3496",
+            "commitDate": "2023-08-27",
+            "channel": "Nightly",
+            "short": "rustc 1.74.0-nightly (8550f15e1 2023-08-27)"
+        },
+        "contractCrate": {
+            "name": "deposit-wrapper",
+            "version": "0.0.0"
+        },
+        "framework": {
+            "name": "elrond-wasm",
+            "version": "0.38.0"
+        }
+    },
+    "name": "DepositWrapper",
+    "constructor": {
+        "inputs": [
+            {
+                "name": "bridged_tokens_wrapper_sc_address",
+                "type": "Address"
+            },
+            {
+                "name": "esdt_safe_sc_address",
+                "type": "Address"
+            },
+            {
+                "name": "wesdt_swap_sc_address",
+                "type": "Address"
+            },
+            {
+                "name": "esdt_token_id",
+                "type": "TokenIdentifier"
+            },
+            {
+                "name": "eth_esdt_token_id",
+                "type": "TokenIdentifier"
+            }
+        ],
+        "outputs": []
+    },
+    "endpoints": [
+        {
+            "name": "deposit",
+            "mutability": "mutable",
+            "payableInTokens": [
+                "*"
+            ],
+            "inputs": [
+                {
+                    "name": "to",
+                    "type": "EthAddress"
+                }
+            ],
+            "outputs": []
+        },
+        {
+            "name": "getBridgedTokensWrapperAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getEsdtSafeAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getWesdtSwapAddress",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "Address"
+                }
+            ]
+        },
+        {
+            "name": "getEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "getEthEsdtTokenId",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "TokenIdentifier"
+                }
+            ]
+        },
+        {
+            "name": "pause",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "unpause",
+            "onlyOwner": true,
+            "mutability": "mutable",
+            "inputs": [],
+            "outputs": []
+        },
+        {
+            "name": "isPaused",
+            "mutability": "readonly",
+            "inputs": [],
+            "outputs": [
+                {
+                    "type": "bool"
+                }
+            ]
+        }
+    ],
+    "events": [],
+    "hasCallback": false,
+    "types": {
+        "EthAddress": {
+            "type": "struct",
+            "docs": [
+                "Wrapper over a 20-byte array"
+            ],
+            "fields": [
+                {
+                    "name": "raw_addr",
+                    "type": "array20<u8>"
+                }
+            ]
+        }
+    }
+}
