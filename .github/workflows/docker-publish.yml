@@ -1,0 +1,15 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches: ["main", "production"]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    uses: holoride/aws-shared-backend-resources/.github/workflows/docker-publish.yml@v1.0.6
+    with:
+      environment: ${{ github.ref_name == 'production' && 'production' || 'sandbox' }}
+      path: bridge
+      service_name: multiversex-bridge
+    secrets: inherit
