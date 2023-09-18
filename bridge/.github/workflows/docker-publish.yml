@@ -1,0 +1,110 @@
+# Shared action used to deploy new versions of a service.
+#
+# This expects the service's infrastructure to be deployed using the shared infrastructure
+# model, e.g. using the terraform `service` module defined in this repository.
+#
+# The specified environment must contain the following variables.  When using the terraform
+# module mentioned above, these will be created automatically when the repository name is set.
+# * AWS_REGION - The region containing the deployed infrastructure.
+# * AWS_CONTAINER_REGISTRY_NAME - The name of the ECR containing the container image.
+# * AWS_CLUSTER_NAME - The service cluster containing the service.
+# * [Deprecated] AWS_CONTAINER_NAME - The container definition name of the service.
+# * [Deprecated] AWS_SERVICE_NAME - The name of the service in ECS.
+# * AWS_CONTAINER_NAME_{{service_name}} - The container definition name of the service.
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      path:
+        type: string
+        default: "."
+      service_name:
+        type: string
+        default: ""
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+# https://github.com/actions/starter-workflows/blob/main/deployments/aws.yml
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    concurrency:
+      group: ${{ inputs.path }}-${{ inputs.environment }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.event.repository.name }}-${{ inputs.service_name }}-${{ github.sha }}
+        run: |
+          # Build a docker container and push it to ECR so that it can be deployed to ECS.
+          docker build -t $ECR_REGISTRY/${{ vars.AWS_CONTAINER_REGISTRY_NAME }}:$IMAGE_TAG ${{ inputs.path }}
+          docker push $ECR_REGISTRY/${{ vars.AWS_CONTAINER_REGISTRY_NAME }}:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/${{ vars.AWS_CONTAINER_REGISTRY_NAME }}:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Determine Service and Container Names
+        id: service-info
+        run: |
+          if [ -z "${{ inputs.service_name }}" ]; then
+            echo "You are using the deprecated way for sending AWS info from terraform to Github."
+            echo "Please switch to using the service-github module instead."
+            echo "service-name=${{ vars.AWS_SERVICE_NAME }}" >> $GITHUB_OUTPUT
+            echo "container-name-env-var=AWS_CONTAINER_NAME" >> $GITHUB_OUTPUT
+          else
+            echo "service-name=${{ inputs.service_name }}" >> $GITHUB_OUTPUT
+            service_name="${{ inputs.service_name }}"
+            uppercase_name=${service_name^^}
+            clean_name=${uppercase_name//[^a-zA-Z0-9_]/_}
+            echo "container-name-env-var=AWS_CONTAINER_NAME_$clean_name" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
+      - name: Download task definiiton
+        id: task-get
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ steps.service-info.outputs.service-name }} --query taskDefinition > ecs-task-definition.json
+          echo "task-definition-path=ecs-task-definition.json" >> $GITHUB_OUTPUT
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-get.outputs.task-definition-path }}
+          container-name: ${{ vars[steps.service-info.outputs.container-name-env-var] }}
+          image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ steps.service-info.outputs.service-name }}
+          cluster: ${{ vars.AWS_CLUSTER_NAME }}
+          wait-for-service-stability: true
