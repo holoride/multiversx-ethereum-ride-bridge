@@ -1,7 +1,7 @@
 [Eth]
     Chain = "Ethereum"
-    NetworkAddress = "https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8" # a network address
-    MultisigContractAddress = "0xe40E20514A67fB2E00213C8567070f690a03De3D" # the eth address for the bridge contract
+    NetworkAddress = "$ETH_NETWORK_ADDRESS" # a network address
+    MultisigContractAddress = "$ETH_CONTRACT_ADDRESS" # the eth address for the bridge contract
     SafeContractAddress = "0xC1056955eE4E81689Da6474F43284CfcF3a45317"
     PrivateKeyFile = "./wallets/ethereum/account-0.sk" # the path to the file containing the relayer eth private key
     GasLimitBase = 350000
@@ -22,8 +22,8 @@
         GasPriceSelector = "SafeGasPrice" # selector used to provide the gas price
 
 [MultiversX]
-    NetworkAddress = "https://devnet-gateway.multiversx.com" # the network address
-    MultisigContractAddress = "erd1qqqqqqqqqqqqqpgqqquj96vuwnnwj2xarsrtdvdmazg7r3zu0z9qwa6jdk" # the multiversx address for the bridge contract
+    NetworkAddress = "$MVX_NETWORK_ADDRESS" # the network address
+    MultisigContractAddress = "$MVX_CONTRACT_ADDRESS" # the multiversx address for the bridge contract
     PrivateKeyFile = "./wallets/multiversx/account-0.pem" # the path to the pem file containing the relayer multiversx wallet
     IntervalToResendTxsInSeconds = 60 # the time in seconds between nonce reads
     MaxRetriesOnQuorumReached = 3
@@ -155,7 +155,7 @@
 
 [BatchValidator]
     Enabled = false
-    URL = "https://devnet-bridge-api.multiversx.com/validateBatch" # batch validator URL.
+    URL = "$MVX_VALIDATOR_ADDRESS" # batch validator URL.
     RequestTimeInSeconds = 2 # maximum timeout (in seconds) for the batch validation request
 
 [PeersRatingConfig]
