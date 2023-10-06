@@ -7,17 +7,25 @@ Smart contracts for both blockchains:
 
 ## Installation and running for the relayer
 
-### Step 1: install & configure go:
-The installation of go should proceed as shown in official golang installation guide https://golang.org/doc/install . In order to run the node, minimum golang version should be 1.17.6.
-
-### Step 2: clone the repository and build the binaries:
+### Step 1: clone the repository
 The `main` branch is the one to use
 
+### Step 2: build docker image
+Buld a docker image using the Dockerfile in this directory.  This will build the bridge service as a reusable image.
+
 ### Step 3: configure the relay
-Checkout `config.toml.example` for all the configuration needed:
+To start a container using the image, some config variables need to be passed in as environment variables.  The following need to be provided, using an env var file is recommended.
+
+- `ETHER_KEY` secret key for ethereum (64 character hexadecimal string)
+- `MULTIVERSEX_KEY` secret key for multiverseX (private key, starting with `-----BEGIN PRIVATE KEY`)
+- `ETH_NETWORK_ADDRESS`, e.g. for testnet: https://sepolia.infura.io/v3/fb44167f83e740898c90737b6ec456d8
+- `ETH_CONTRACT_ADDRESS` e.g. for testnet: 0xe40E20514A67fB2E00213C8567070f690a03De3D
+- `MVX_NETWORK_ADDRESS` e.g. for testnet: https://devnet-gateway.multiversx.com
+- `MVX_CONTRACT_ADDRESS` e.g. for testnet: erd1qqqqqqqqqqqqqpgqqquj96vuwnnwj2xarsrtdvdmazg7r3zu0z9qwa6jdk
+- `MVX_VALIDATOR_ADDRESS` e.g. for testnet: https://devnet-bridge-api.multiversx.com/validateBatch
 
 ### Step 4: monitoring your relayer node
-After your node is up and running. You can use relayer's api routes to monitor the existing metrics.
+Start a docker container using the built image. After your node is up and running. You can use relayer's api routes to monitor the existing metrics.
 For the documentation and how to setup swagger. Go to [README.md](api/swagger/README.md)
 
 
