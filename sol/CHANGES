@@ -1,0 +1,7 @@
+The [original template][] has been adjusted to support converting between Etherium and RIDE tokens on the MultiversX blockchain.
+
+For this various config values were adjusted.
+
+To see all changes in detail, please see the history/diff the repository with the original template.
+
+[original template]: https://github.com/multiversx/mx-bridge-eth-sc-sol/
