@@ -9,7 +9,7 @@ To bridge RIDE from MultiversX to Ethereum the following three components are ne
 - [bridge](bridge)
 
 ## Technical Documentation
-A technical overview of the implmentation can be found [here](docs/tech_docs.md).
+A technical overview of the implementation can be found [here](docs/tech_docs.md).
 
 ## Orignail implementation
 This implementation is an extension of [MultiverseX](https://github.com/multiversx/mx-bridge-eth-go) implementation. A summary of the functional variations is available [here](CHANGES).
