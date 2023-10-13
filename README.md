@@ -2,7 +2,7 @@
 
 This implmentation of the MultiversX-Ethereum bridge links both blockchains, enabling the use of RIDE (holoride) tokens on each platform.
 
-## Compoents
+## Components
 To bridge RIDE from MultiversX to Ethereum the following three components are nessary:
 - [MultiverseX smart contract](rs/README.md)
 - [Ethereum smart contract](sol/README.md)
