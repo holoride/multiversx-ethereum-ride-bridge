@@ -1,7 +1,185 @@
-The [original template][] has been adjusted to support converting between Etherium and RIDE tokens on the MultiversX blockchain.
+The following original templates have been adjusted to support converting between Etherium and RIDE tokens on the MultiversX blockchain:
+- https://github.com/multiversx/mx-bridge-eth-sc-sol/ @ 2bc3b3a8a8c31a5d69b244dbc99cc5a90d3fa9ee
+- https://github.com/multiversx/mx-bridge-eth-sc-rs/ @ 8e317c5736b5885a56bf4f49569c62a726868c54
+- https://github.com/multiversx/mx-bridge-eth-go/ @ 70413bc2423dc7a8148762e07b2010284354b2cb
 
 For this various config values were adjusted.
 
-To see all changes in detail, please see the history/diff the repository with the original template.
-
-[original template]: https://github.com/multiversx/mx-bridge-eth-sc-sol/
+Changes to the original versions of the templates:
+```
+ .mnemonic.sample                                   |   1 +
+ CHANGES                                            |   7 +
+ LICENSE                                            | 674 +++++++++++++++++
+ README.md                                          |   5 +
+ bridge/.dockerignore                               |   2 +
+ bridge/.github/ISSUE_TEMPLATE/bug-report.md        |  19 +
+ bridge/.github/ISSUE_TEMPLATE/feature.md           |  12 +
+ bridge/.github/ISSUE_TEMPLATE/question.md          |  12 +
+ bridge/.github/workflows/build.yml                 |  35 +
+ bridge/.github/workflows/code-coverage.yml         |  38 +
+ bridge/.github/workflows/create_release.yml        |  99 +++
+ bridge/.github/workflows/golangci-lint.yml         |  34 +
+ bridge/.github/workflows/pr-tests.yml              |  27 +
+ bridge/.gitignore                                  |  34 +
+ bridge/Dockerfile                                  |  29 +
+ bridge/Makefile                                    |   2 +-
+ bridge/README.md                                   |  20 +-
+ bridge/clients/multiversx/client.go                |   2 +-
+ bridge/clients/multiversx/interface.go             |   7 +-
+ bridge/clients/multiversx/transactionHandler.go    |  12 +-
+ .../clients/multiversx/transactionHandler_test.go  |   9 +-
+ bridge/cmd/bridge/config/config.toml               |  20 +-
+ bridge/cmd/bridge/entrypoint.sh                    |  62 ++
+ bridge/cmd/bridge/keys/ethereum.sk                 |   2 +-
+ bridge/cmd/bridge/keys/multiversx.pem              |  10 +-
+ bridge/cmd/bridge/mxpy-up.py                       | 435 +++++++++++
+ bridge/go.mod                                      |  25 +-
+ bridge/go.sum                                      |  64 +-
+ .../integrationTests/mock/multiversXChainMock.go   |  15 +-
+ .../mock/multiversXContractStateMock.go            |  13 +-
+ bridge/p2p/broadcaster_test.go                     |   3 +-
+ .../bridge/nonceTransactionsHandlerStub.go         |   6 +-
+ bridge/testsCommon/interactors/proxyStub.go        |   9 +-
+ docs/tech_docs.md                                  | 808 +++++++++++++++++++++
+ rs/.github/workflows/actions.yml                   |  23 +
+ rs/.github/workflows/env                           |   1 +
+ rs/.github/workflows/release.yml                   |  16 +
+ rs/.gitignore                                      |  20 +
+ rs/Cargo.toml                                      |   8 +-
+ rs/LICENSE                                         | 674 -----------------
+ rs/bridged-tokens-wrapper/Cargo.toml               |   6 +-
+ rs/bridged-tokens-wrapper/meta/Cargo.toml          |   2 +-
+ rs/bridged-tokens-wrapper/src/lib.rs               |  11 +-
+ rs/bridged-tokens-wrapper/wasm/Cargo.lock          | 331 ---------
+ rs/bridged-tokens-wrapper/wasm/Cargo.toml          |   5 +-
+ rs/bridged-tokens-wrapper/wasm/src/lib.rs          |  25 +-
+ rs/build-wasm-release.sh                           |  12 +
+ rs/build-wasm.sh                                   |   4 +-
+ rs/common/eth-address/Cargo.toml                   |   2 +-
+ rs/common/fee-estimator-module/Cargo.toml          |   4 +-
+ rs/common/fee-estimator-module/src/lib.rs          |  46 ++
+ rs/common/max-bridged-amount-module/Cargo.toml     |   4 +-
+ rs/common/token-module/Cargo.toml                  |   4 +-
+ rs/common/token-module/src/lib.rs                  |   2 +-
+ rs/common/transaction/Cargo.toml                   |   2 +-
+ rs/common/transaction/src/lib.rs                   |   8 +-
+ rs/common/tx-batch-module/Cargo.toml               |   4 +-
+ rs/deposit-wrapper/Cargo.toml                      |  45 ++
+ rs/deposit-wrapper/interaction/snippets.sh         |   0
+ rs/deposit-wrapper/meta/Cargo.toml                 |  17 +
+ rs/deposit-wrapper/meta/src/main.rs                |   3 +
+ rs/deposit-wrapper/multiversx.json                 |   3 +
+ rs/deposit-wrapper/output/deposit-wrapper.abi.json | 151 ++++
+ rs/deposit-wrapper/output/deposit-wrapper.wasm     | Bin 0 -> 8900 bytes
+ rs/deposit-wrapper/src/lib.rs                      | 114 +++
+ rs/deposit-wrapper/testnet.toml                    |   0
+ rs/deposit-wrapper/wasm/Cargo.toml                 |  32 +
+ rs/deposit-wrapper/wasm/src/lib.rs                 |  29 +
+ rs/esdt-safe/Cargo.toml                            |   6 +-
+ rs/esdt-safe/interaction/snippets.sh               |  18 +-
+ rs/esdt-safe/meta/Cargo.toml                       |   4 +-
+ rs/esdt-safe/src/lib.rs                            |  45 +-
+ rs/esdt-safe/wasm/Cargo.toml                       |   5 +-
+ rs/esdt-safe/wasm/src/lib.rs                       |  54 +-
+ rs/multi-transfer-esdt/Cargo.toml                  |   7 +-
+ rs/multi-transfer-esdt/interaction/snippets.sh     |  10 +-
+ rs/multi-transfer-esdt/meta/Cargo.toml             |   4 +-
+ rs/multi-transfer-esdt/src/lib.rs                  |  42 +-
+ rs/multi-transfer-esdt/wasm/Cargo.toml             |   5 +-
+ rs/multi-transfer-esdt/wasm/src/lib.rs             |  23 +-
+ rs/multisig/Cargo.toml                             |   6 +-
+ rs/multisig/interaction/README.md                  |   5 +
+ .../interaction/config/aggregator-snippets.sh      |  41 +-
+ rs/multisig/interaction/config/configs.cfg         | 106 ++-
+ rs/multisig/interaction/config/deposit-snippets.sh |  44 ++
+ .../interaction/config/issue-tokens-snippets.sh    | 113 ++-
+ rs/multisig/interaction/config/menu_functions.cfg  | 245 +++++--
+ .../interaction/config/multisig-snippets.sh        | 110 ++-
+ .../interaction/config/multitransfer-snippets.sh   |   6 +-
+ .../interaction/config/relayers-snippets.sh        |  27 +-
+ rs/multisig/interaction/config/safe-snippets.sh    |  36 +-
+ rs/multisig/interaction/config/upgrade-snippets.sh |   8 +-
+ .../interaction/config/wesdt-swap-snippets.sh      |  83 +++
+ rs/multisig/interaction/config/wrapped-snippets.sh |  60 +-
+ rs/multisig/interaction/script.sh                  | 153 +++-
+ rs/multisig/meta/Cargo.toml                        |   4 +-
+ rs/multisig/src/lib.rs                             |  12 +-
+ rs/multisig/src/setup.rs                           |  31 +-
+ rs/multisig/src/util.rs                            |   1 -
+ rs/multisig/wasm/Cargo.toml                        |   5 +-
+ rs/multisig/wasm/src/lib.rs                        | 104 +--
+ rs/price-aggregator/Cargo.toml                     |  21 +
+ rs/price-aggregator/README.md                      |  38 +
+ rs/price-aggregator/mandos/deploy.scen.json        |  94 ---
+ .../mandos/get_latest_price_feed.scen.json         |  83 ---
+ .../oracle_gwei_in_eth_and_egld_submit.scen.json   |  55 --
+ rs/price-aggregator/mandos/oracle_submit.scen.json |  32 -
+ rs/price-aggregator/meta/Cargo.toml                |  14 +
+ rs/price-aggregator/meta/src/main.rs               |   3 +
+ rs/price-aggregator/multiversx.json                |   3 +
+ .../output/price-aggregator.abi.json               | 263 +++++++
+ rs/price-aggregator/output/price-aggregator.wasm   | Bin 0 -> 19040 bytes
+ rs/price-aggregator/price-aggregator.abi.json      | 263 -------
+ rs/price-aggregator/price-aggregator.wasm          | Bin 14958 -> 0 bytes
+ rs/price-aggregator/src/lib.rs                     | 248 +++++++
+ rs/price-aggregator/src/median.rs                  |  23 +
+ rs/price-aggregator/src/price_aggregator_data.rs   |  23 +
+ rs/price-aggregator/wasm/Cargo.toml                |  30 +
+ rs/price-aggregator/wasm/src/lib.rs                |  27 +
+ rs/price-aggregator/wasm/target/.rustc_info.json   |   1 +
+ rs/wesdt-swap/Cargo.toml                           |  36 +
+ rs/wesdt-swap/interaction/snippets.sh              |   0
+ rs/wesdt-swap/meta/Cargo.toml                      |  17 +
+ rs/wesdt-swap/meta/src/main.rs                     |   3 +
+ rs/wesdt-swap/multiversx.json                      |   3 +
+ rs/wesdt-swap/output/wesdt-swap.abi.json           | 153 ++++
+ rs/wesdt-swap/output/wesdt-swap.wasm               | Bin 0 -> 6658 bytes
+ rs/wesdt-swap/src/lib.rs                           | 118 +++
+ rs/wesdt-swap/testnet.toml                         |   0
+ rs/wesdt-swap/wasm/Cargo.toml                      |  32 +
+ rs/wesdt-swap/wasm/src/lib.rs                      |  30 +
+ sol/.commitlintrc.yaml                             |   2 +
+ sol/.czrc                                          |   3 +
+ sol/.editorconfig                                  |  16 +
+ sol/.env.example                                   |   5 +
+ sol/.eslintignore                                  |  20 +
+ sol/.eslintrc.yaml                                 |  21 +
+ sol/.gitattributes                                 |   1 +
+ sol/.gitignore                                     |  27 +
+ sol/.husky/.gitignore                              |   1 +
+ sol/.husky/commit-msg                              |   4 +
+ sol/.husky/pre-commit                              |   4 +
+ sol/.idea/.gitignore                               |   2 +
+ sol/.idea/elrond-eth-bridge-clone.iml              |   8 +
+ sol/.idea/inspectionProfiles/Project_Default.xml   |  12 +
+ sol/.idea/misc.xml                                 |   6 +
+ sol/.idea/modules.xml                              |   8 +
+ sol/.idea/vcs.xml                                  |   6 +
+ sol/.lintstagedrc                                  |   5 +
+ sol/.prettierignore                                |  19 +
+ sol/.prettierrc.yaml                               |  12 +
+ sol/.solcover.js                                   |  17 +
+ sol/.solhint.json                                  |  20 +
+ sol/.solhintignore                                 |   3 +
+ sol/.yarnrc.yml                                    |   7 +
+ sol/abi/contracts/ERC20Safe.sol/ERC20Safe.json     | 104 +++
+ sol/contracts/Bridge.sol                           |   3 +-
+ sol/contracts/ERC20Safe.sol                        |  49 +-
+ sol/contracts/GenericERC20.sol                     |   9 +-
+ sol/contracts/access/RelayerRole.sol               |  10 +-
+ sol/contracts/test/EvilERC20.sol                   |   2 +-
+ sol/hardhat.config.ts                              |  25 +-
+ sol/package.json                                   |   7 +-
+ sol/setup.config.json                              |  18 +-
+ sol/tasks/deploy/deploy-whitelist-token.ts         |  34 +
+ sol/tasks/deploy/index.ts                          |   1 +
+ sol/tasks/deploy/safe.ts                           |   4 +-
+ sol/tasks/deploy/set-service-fee-receiver.ts       |  20 +
+ sol/tasks/deposit.ts                               |  11 +-
+ sol/tasks/init-supply.ts                           |  21 +-
+ sol/tasks/mint-test-tokens.ts                      |   3 +-
+ sol/tasks/set-max-amount.ts                        |   5 +-
+ sol/tasks/set-min-amount.ts                        |   3 +-
+ sol/yarn.lock                                      | 180 ++---
+ 174 files changed, 5750 insertions(+), 2184 deletions(-)
+```
