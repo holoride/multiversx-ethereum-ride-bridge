@@ -1,4 +1,4 @@
-# Holoride (RIDE): Multiversx <-> Ethereum Bridge
+# holoride (RIDE): Multiversx <-> Ethereum Bridge
 
 ## Technical operations of the bridge
 
