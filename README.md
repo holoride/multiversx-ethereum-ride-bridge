@@ -1,4 +1,4 @@
-# MultiverseX <-> Ethereum Bridge
+# MultiversX <-> Ethereum Bridge
 
 This implementation of the MultiversX-Ethereum bridge links both blockchains, enabling the use of RIDE (holoride) tokens on each platform.
 
@@ -18,4 +18,4 @@ This implementation is an extension of [MultiversX](https://github.com/multivers
 We recognize that this repository includes private keys for both the MultiversX and Ethereum testnets. Permanently removing these keys would necessitate altering the git history, which would in turn change the git hashes. Since the smart contract audit relies on these specific hashes, the private keys remain publicly accessible in this repository.
 
 ## License
-The MultiverseX <-> Ethereum Bridge and smart contracts are licensed under the [GPL v3](LICENSE).
+The MultiversX <-> Ethereum Bridge and smart contracts are licensed under the [GPL v3](LICENSE).
