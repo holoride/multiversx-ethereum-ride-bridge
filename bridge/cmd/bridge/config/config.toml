@@ -2,7 +2,7 @@
     Chain = "Ethereum"
     NetworkAddress = "$ETH_NETWORK_ADDRESS" # a network address
     MultisigContractAddress = "$ETH_CONTRACT_ADDRESS" # the eth address for the bridge contract
-    SafeContractAddress = "0xC1056955eE4E81689Da6474F43284CfcF3a45317"
+    SafeContractAddress = "$ETH_SAFE_ADDRESS"
     PrivateKeyFile = "./wallets/ethereum/account-0.sk" # the path to the file containing the relayer eth private key
     GasLimitBase = 350000
     GasLimitForEach = 30000

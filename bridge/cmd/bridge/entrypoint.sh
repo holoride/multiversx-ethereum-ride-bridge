@@ -35,6 +35,13 @@ then
 fi
 sed -i -e "s|\$ETH_CONTRACT_ADDRESS|$ETH_CONTRACT_ADDRESS|g" ./config/config.toml
 
+if [ -z "$ETH_SAFE_ADDRESS" ]
+then
+  echo "\$ETH_SAFE_ADDRESS is empty"
+  exit 1
+fi
+sed -i -e "s|\$ETH_SAFE_ADDRESS|$ETH_SAFE_ADDRESS|g" ./config/config.toml
+
 if [ -z "$MVX_NETWORK_ADDRESS" ]
 then
   echo "\$MVX_NETWORK_ADDRESS is empty"
