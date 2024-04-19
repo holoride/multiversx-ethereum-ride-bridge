@@ -6,7 +6,7 @@ This implementation of the MultiversX-Ethereum bridge links both blockchains, en
 To bridge RIDE from MultiversX to Ethereum, these three components are nessary:
 - [MultiversX smart contracts](rs/README.md)
 - [Ethereum smart contracts](sol/README.md)
-- [bridge](bridge/README.md)
+- [Mvx<->Eth Bridge](bridge/README.md)
 
 ## Technical Documentation
 A technical overview of the implementation can be found [here](docs/tech_docs.md).
