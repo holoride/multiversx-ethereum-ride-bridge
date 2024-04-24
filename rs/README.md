@@ -30,8 +30,4 @@ Note that not all tokens will be transferred, part of them will be deducted for 
 
 ## Ethereum -> MultiversX transaction
 
-To be able to transfer your tokens back, you will likely have to use an ERC20 contract on the Ethereum blockchain. Once your transaction has been processed on that side, our relayers will simply transfer the tokens back to your Elrond account, through the `MultiTransferEsdt` SC. No additional fees have to be paid for this kind of transactions.  
-
-## Conclusion
-
-And that sums up the MultiversX-Ethereum bridge. It's open source, so if you're interested in the details, you can always check out the implementation. In the future, it will likely be implemented in Maiar, so it will be very straight forward to move your tokens around :)
+To be able to transfer your tokens back, you will likely have to use an ERC20 contract on the Ethereum blockchain. Once your transaction has been processed on that side, our relayers will simply transfer the tokens back to your Elrond account, through the `MultiTransferEsdt` SC. No additional fees have to be paid for this kind of transactions.
